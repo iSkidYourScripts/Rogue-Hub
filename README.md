@@ -6,7 +6,6 @@
 <br>
 ![Rogue Hub Slap Battles Script](https://cdn.discordapp.com/attachments/1022560613341335682/1022912565271068702/unknown.png)
 <br>
-<br>
 ## 🤓 Dear Skids
 **Good for you,** you decided to skid something. <br>
 We can't stop you, but just know you're pathetic. <br>
