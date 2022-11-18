@@ -788,7 +788,7 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
                             
                             repeat task.wait()
                                 if getTool().Name == "Pack-A-Punch" then
-                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.Position * CFrame.new(0,6.3,0)
+                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,6.3,0)
                                     game:GetService("ReplicatedStorage").Events.Slap:FireServer(target.Character["Right Arm"])
                                 else
                                     localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3.5)
@@ -1084,7 +1084,7 @@ infoSec:CreateButton("Consider donating on PayPal!", function()
 end)
 
 infoSec:CreateButton("Consider donating on Bitcoin!", function()
-    setclipboard("bc1qnrajmhe83hreyjm9uzrq0ytvu2mg6w2nknl2vy")
+    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Rogue Hub Note",
@@ -1107,7 +1107,7 @@ infoSec:CreateButton("Join us on discord!", function()
             Body = game:GetService("HttpService"):JSONEncode(
             {
                 ["args"] = {
-                ["code"] = "VdrHU8KP7c",
+                ["code"] = "c4xWZ4G4bx",
                 },
                         
                 ["cmd"] = "INVITE_BROWSER",
@@ -1115,7 +1115,7 @@ infoSec:CreateButton("Join us on discord!", function()
             })
         })
     else
-        setclipboard("https://discord.gg/VdrHU8KP7c")
+        setclipboard("https://discord.gg/c4xWZ4G4bx")
     
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Rogue Hub Note",
