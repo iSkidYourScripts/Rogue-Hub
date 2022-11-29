@@ -1,4 +1,4 @@
--- hi murder mystery a owner aka crafty ik your here looking to patch shit up :D
+-- this game was taken down and now unplayable, this code is still left in rogue hub for preservation purposes.
 
 if getgenv().Rogue_AlreadyLoaded ~= nil then error("Rogue Hub was already found running or you have other scripts executed!") return else getgenv().Rogue_AlreadyLoaded = 0 end
 
