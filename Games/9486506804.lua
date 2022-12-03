@@ -113,28 +113,27 @@ local uiRainbow = uiSec:CreateToggle("Rainbow UI", false, function(bool)
     end
 end)
 
+-- Credits
+
 local infoSec = infoTab:CreateSection("Credits")
 
 local req = http_request or request or syn.request
 
--- I ALSO KILLED KYRON ON MY BIRTHDAY - FROM KITZOON
-infoSec:CreateLabel("🍑 MY UNCLE DID A PUMPKIN IN BED 🍑")
-
-infoSec:CreateButton("Devil of Spooky Hub: Kitzoon#7750", function()
+infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Spooky Hub Note",
+        Title = "Rogue Hub Note",
         Text = "Copied Kitzoon's discord username and tag to your clipboard.",
         Duration = 5
     })
 end)
 
-infoSec:CreateButton("Blood sucking helper: Kyron#6083", function()
+infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     setclipboard("Kyron#6083")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Script Notification",
+        Title = "Rogue Hub Note",
         Text = "Copied Kyron's discord username and tag to your clipboard.",
         Duration = 5
     })
@@ -144,17 +143,17 @@ infoSec:CreateButton("Consider donating on PayPal!", function()
     setclipboard("https://paypal.me/RogueHub")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Spooky Hub Note",
+        Title = "Rogue Hub Note",
         Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
         Duration = 5
     })
 end)
 
 infoSec:CreateButton("Consider donating on Bitcoin!", function()
-    setclipboard("bc1qnrajmhe83hreyjm9uzrq0ytvu2mg6w2nknl2vy")
+    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Spooky Hub Note",
+        Title = "Rogue Hub Note",
         Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
         Duration = 5
     })
@@ -174,9 +173,9 @@ infoSec:CreateButton("Join us on discord!", function()
             Body = game:GetService("HttpService"):JSONEncode(
             {
                 ["args"] = {
-                ["code"] = "VdrHU8KP7c",
+                ["code"] = "c4xWZ4G4bx",
                 },
-                        
+                
                 ["cmd"] = "INVITE_BROWSER",
                 ["nonce"] = "."
             })
@@ -185,7 +184,7 @@ infoSec:CreateButton("Join us on discord!", function()
         setclipboard("https://discord.gg/VdrHU8KP7c")
     
         game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Spooky Hub Note",
+            Title = "Rogue Hub Note",
             Text = "Copied our discord server to your clipboard.",
             Duration = 5
         })
