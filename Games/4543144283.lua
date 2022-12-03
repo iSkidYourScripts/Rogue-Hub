@@ -73,7 +73,7 @@ local localPlr = game:GetService("Players").LocalPlayer
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
 local Window = Library:CreateWindow(Config, game:GetService("CoreGui"))
 
-local mainTab = Window:CreateTab("Main")
+local mainTab = Window:CreateTab("Mega Noob Simulator")
 local mainSec = mainTab:CreateSection("Farming")
 
 localPlr.CharacterAdded:Connect(function()
@@ -282,11 +282,13 @@ local uiRainbow = uiSec:CreateToggle("Rainbow UI", nil, function(bool)
     end
 end)
 
+-- Credits
+
 local infoSec = infoTab:CreateSection("Credits")
 
 local req = http_request or request or syn.request
 
-infoSec:CreateButton("Father of Rogue Hub: Kitzoon#7750", function()
+infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -300,8 +302,28 @@ infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     setclipboard("Kyron#6083")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Script Notification",
+        Title = "Rogue Hub Note",
         Text = "Copied Kyron's discord username and tag to your clipboard.",
+        Duration = 5
+    })
+end)
+
+infoSec:CreateButton("Consider donating on PayPal!", function()
+    setclipboard("https://paypal.me/RogueHub")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
+        Duration = 5
+    })
+end)
+
+infoSec:CreateButton("Consider donating on Bitcoin!", function()
+    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
         Duration = 5
     })
 end)
@@ -320,9 +342,9 @@ infoSec:CreateButton("Join us on discord!", function()
             Body = game:GetService("HttpService"):JSONEncode(
             {
                 ["args"] = {
-                ["code"] = "VdrHU8KP7c",
+                ["code"] = "c4xWZ4G4bx",
                 },
-                        
+                
                 ["cmd"] = "INVITE_BROWSER",
                 ["nonce"] = "."
             })
