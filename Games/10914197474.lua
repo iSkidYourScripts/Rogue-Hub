@@ -74,7 +74,7 @@ if teleportFunc then
             task.wait(5)
             
             game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Please note",
+                Title = "Please Note",
                 Text = "This was made by BluBambi, NOT Kitzoon.",
                 Duration = 10
             })
