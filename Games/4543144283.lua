@@ -350,7 +350,7 @@ infoSec:CreateButton("Join us on discord!", function()
             })
         })
     else
-        setclipboard("https://discord.gg/VdrHU8KP7c")
+        setclipboard("https://discord.gg/c4xWZ4G4bx")
     
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Rogue Hub Note",
@@ -433,7 +433,7 @@ end)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rogue Hub Message",
-    Text = "Successfully loaded.",
+    Text = "It's almost 2023!",
     Duration = 5
 })
 
@@ -442,7 +442,7 @@ sound:Destroy()
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Please Note",
-    Text = "The rogue hub version you are using is currently in alpha, bugs may occur.",
+    Title = "Rogue Hub Fact",
+    Text = "Rogue hub has over 3500+ lines of code!",
     Duration = 10
 })
