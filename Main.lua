@@ -44,6 +44,12 @@ if response.Body ~= "404: Not Found" then
     end)
     
     repeat task.wait() until game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) ~= nil
+    
+    local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
+
+    if teleportFunc and game.PlaceId ~= 6403373529 then
+        teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
+    end
 
     -- If its not 404 why make another HTTP request?
     -- ^ Answer to above - Kitzoon is big dumb
