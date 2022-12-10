@@ -338,13 +338,33 @@ infoSec:CreateButton("Join us on discord!", function()
             })
         })
     else
-        setclipboard("https://discord.gg/VdrHU8KP7c")
+        setclipboard("https://discord.gg/c4xWZ4G4bx")
     
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Rogue Hub Note",
             Text = "Copied our discord server to your clipboard.",
             Duration = 5
         })
+    end
+end)
+
+-- Misc
+local miscSec = infoTab:CreateSection("Miscellaneous")
+
+local server = miscSec:CreateButton("Serverhop", function()
+    -- credits to: inf yield for there serverhop
+    local serverList = {}
+    
+    for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+    	if v.playing and type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+    		serverList[#serverList + 1] = v.id
+    	end
+    end
+    
+    if #serverList > 0 then
+    	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverList[math.random(1, #serverList)])
+    else
+        error("No servers found")
     end
 end)
 
