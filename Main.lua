@@ -42,6 +42,8 @@ if response.Body ~= "404: Not Found" then
         wait(1)
         game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 2, false, nil, 0)
     end)
+    
+    repeat task.wait() until game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) ~= nil
 
     -- If its not 404 why make another HTTP request?
     -- ^ Answer to above - Kitzoon is big dumb
