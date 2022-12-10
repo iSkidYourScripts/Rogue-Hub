@@ -13,7 +13,7 @@ sound.SoundId = "rbxassetid://1548304764"
 sound.PlayOnRemove = true
 sound.Volume = 0.5
 
-local ourColor = Color3.fromRGB(201,144,150)
+local ourColor = Color3.fromRGB(153, 148, 148)
 
 function CheckConfigFile()
     if not isfile("/Rogue Hub/Configs/Keybind.ROGUEHUB") then return Enum.KeyCode.RightControl else return Enum.KeyCode[game:GetService("HttpService"):JSONDecode(readfile("/Rogue Hub/Configs/Keybind.ROGUEHUB"))["Key"]] or Enum.KeyCode.RightControl end
@@ -181,7 +181,7 @@ infoSec:CreateButton("Join us on discord!", function()
             })
         })
     else
-        setclipboard("https://discord.gg/VdrHU8KP7c")
+        setclipboard("https://discord.gg/c4xWZ4G4bx")
     
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Rogue Hub Note",
@@ -191,10 +191,38 @@ infoSec:CreateButton("Join us on discord!", function()
     end
 end)
 
+-- Misc
+local miscSec = infoTab:CreateSection("Miscellaneous")
+
+local server = miscSec:CreateButton("Serverhop", function()
+    -- credits to: inf yield for there serverhop
+    local serverList = {}
+    
+    for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+    	if v.playing and type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+    		serverList[#serverList + 1] = v.id
+    	end
+    end
+    
+    if #serverList > 0 then
+    	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverList[math.random(1, #serverList)])
+    else
+        error("No servers found")
+    end
+end)
+
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Spooky Hub Message",
-    Text = "Happy Halloween!",
+    Title = "Rogue Hub Message",
+    Text = "It's almost 2023!",
     Duration = 5
 })
 
 sound:Destroy()
+
+task.wait(5)
+
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Rogue Hub Fact",
+    Text = "Rogue hub has over 3500+ lines of code!",
+    Duration = 10
+})
