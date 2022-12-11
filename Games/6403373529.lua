@@ -4,6 +4,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 9
 
 local isLoaded = false
 local isTping = false
+local isTyping = false
 
 local timeSlapped = 0
 local timeRagdolled = 0
@@ -69,6 +70,10 @@ if game.PlaceId == 9431156611 and getrawmetatable and hookmetamethod then
             return
         end
         
+        if not checkcaller() and tostring(self) == "AdminGUI" and tostring(method) == "FireServer" then
+            return
+        end
+        
         return old(self, ...)
     end)
 elseif game.PlaceId ~= 9431156611 and getrawmetatable and hookmetamethod then
@@ -80,9 +85,18 @@ elseif game.PlaceId ~= 9431156611 and getrawmetatable and hookmetamethod then
             return
         end
         
+        if not checkcaller() and tostring(self) == "AdminGUI" and tostring(method) == "FireServer" then
+            return
+        end
+        
         return old(self, ...)
     end)
 end
+
+-- typing detector
+game:GetService("UserInputService").InputBegan:Connect(function(input, typing)
+    isTyping = typing
+end)
 
 local sound = Instance.new("Sound", workspace)
 sound.SoundId = "rbxassetid://1548304764"
@@ -102,7 +116,7 @@ local Config = {
 local localPlr = game:GetService("Players").LocalPlayer
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
-local mainTab = window:CreateTab("Main")
+local mainTab = window:CreateTab("Slap Battles")
 
 getgenv().settings = {
     gloveExtend = false,
@@ -139,7 +153,9 @@ getgenv().settings = {
     tpClick = false,
     walkSpeedKey = "NONE",
     jumpPowerKey = "NONE",
-    slappleFarm = false
+    slappleFarm = false,
+    spamGlove = false,
+    infGold = false
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -204,12 +220,12 @@ localPlr.CharacterAdded:Connect(function()
         
         game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
         
-        wait(1)
-        
+        repeat wait() until localPlr.Character:FindFirstChild("entered")
+            
         for _,v in pairs(game.Lighting:GetChildren()) do
-            if v.Name ~= "DepthOfField" or v.Name ~= "Bloom" or v.Name ~= "ColorCorrection" then
-                v:Destroy()    
-            end
+			if v.Name ~= "DepthOfField" or v.Name ~= "Bloom" or v.Name ~= "ColorCorrection" then
+				v:Destroy()    
+			end
         end
     end
     
@@ -289,6 +305,13 @@ if game.PlaceId ~= 9431156611 and game.PlaceId ~= 11520107397 and game.PrivateSe
     
     -- corn:AddToolTip("Farm's candy corns for you. (from the latest halloween event)")
     
+    local errorlol = playerSec:CreateToggle("Error Sound Earrape (FE)", getgenv().settings.errorSound or false, function(bool)
+        getgenv().settings.errorSound = bool
+        saveSettings()
+    end)
+    
+    errorlol:AddToolTip("spams the error sound, practically ear rape for everyone in your server.")
+    
     local slapple = playerSec:CreateToggle("Slapples Glove Farm", getgenv().settings.slappleFarm or false, function(bool)
         getgenv().settings.slappleFarm = bool
         saveSettings()
@@ -338,6 +361,11 @@ if game.PlaceId ~= 9431156611 then
         timeSlapped = timeSlapped + 1
     end)
 end
+
+playerSec:CreateToggle("Infinite Jump", getgenv().settings.infJump or false, function(bool)
+    getgenv().settings.infJump = bool
+    saveSettings()
+end)
 
 local noRagTog = playerSec:CreateToggle("Anti Ragdoll", getgenv().settings.noRagdoll or false, function(bool)
     getgenv().settings.noRagdoll = bool
@@ -437,17 +465,14 @@ if game.PlaceId ~= 9431156611 then
                 game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
                 
                 localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
-                
                 return
             end
             
-            if getgenv().settings.invis and isLoaded and localPlr.Character:FindFirstChild("entered") ~= nil then
-                localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+            --if getgenv().settings.invis and isLoaded and localPlr.Character:FindFirstChild("entered") then
+                --localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
                 
-                repeat wait() until localPlr.Character ~= nil and localPlr.Character:WaitForChild("HumanoidRootPart") and localPlr.Character:FindFirstChild("entered") == nil
-                
-                
-            end
+                --repeat wait() until localPlr.Character ~= nil and localPlr.Character:WaitForChild("HumanoidRootPart") and localPlr.Character:FindFirstChild("entered") == nil
+            --end
             
             if getgenv().settings.invis then
                 if localPlr.leaderstats.Slaps.Value >= 666 and localPlr.leaderstats.Glove.Value ~= "Ghost" then
@@ -462,6 +487,7 @@ if game.PlaceId ~= 9431156611 then
                 end
                 
                 wait(0.3)
+                
                 game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
                 
                 game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -470,6 +496,8 @@ if game.PlaceId ~= 9431156611 then
                     Duration = 5
                 })
             
+                repeat wait() until localPlr.Character:FindFirstChild("entered")
+                
                 for _,v in pairs(game.Lighting:GetChildren()) do
                     if v.Name ~= "DepthOfField" or v.Name ~= "Bloom" or v.Name ~= "ColorCorrection" then
                         v:Destroy()    
@@ -479,6 +507,13 @@ if game.PlaceId ~= 9431156611 then
         end)
         
         togInvis:AddToolTip("Uses a glitch in Slap Battles to make you invisible. (Requires 666 slaps or more)")
+        
+        local spamEquip = playerSec:CreateToggle("Godmode (FE)", getgenv().settings.infGold or false, function(bool)
+            getgenv().settings.infGold = bool
+            saveSettings()
+        end)
+        
+        spamEquip:AddToolTip("Uses a glitch on a certain glove to give you godmode. (Requires 2500 slaps or more)")
     end
     
     playerSec:CreateToggle("Anti Void", getgenv().settings.noVoid or false, function(bool)
@@ -788,7 +823,7 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
                             
                             repeat task.wait()
                                 if getTool().Name == "Pack-A-Punch" then
-                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,6.3,0)
+                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.Position * CFrame.new(0,6.3,0)
                                     game:GetService("ReplicatedStorage").Events.Slap:FireServer(target.Character["Right Arm"])
                                 else
                                     localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3.5)
@@ -833,6 +868,13 @@ if game.PlaceId ~= 9431156611 then
         end)
         
         rockTog:AddToolTip("spams the rock ability on the glove, only works for diamond glove")
+        
+        local spamEquip = gloveSec:CreateToggle("Spam Equip Gloves", getgenv().settings.spamGlove or false, function(bool)
+            getgenv().settings.spamGlove = bool
+            saveSettings()
+        end)
+        
+        spamEquip:AddToolTip("spams equips all gloves in the game, useful for lagging servers. (requires you to be in lobby)")
     end
 end
 
@@ -1073,6 +1115,16 @@ infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     })
 end)
 
+infoSec:CreateButton("God of finding exploits: BluBambi#9867", function()
+    setclipboard("BluBambi#9867")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied BluBambi's discord username and tag to your clipboard.",
+        Duration = 5
+    })
+end)
+
 infoSec:CreateButton("Consider donating on PayPal!", function()
     setclipboard("https://paypal.me/RogueHub")
     
@@ -1109,7 +1161,7 @@ infoSec:CreateButton("Join us on discord!", function()
                 ["args"] = {
                 ["code"] = "c4xWZ4G4bx",
                 },
-                        
+                
                 ["cmd"] = "INVITE_BROWSER",
                 ["nonce"] = "."
             })
@@ -1138,6 +1190,28 @@ end
 
 ragdollLabel = gameSec:CreateLabel("Times Ragdolled: " .. timeRagdolled)
 
+-- Misc
+local miscSec = infoTab:CreateSection("Miscellaneous")
+
+local server = miscSec:CreateButton("Serverhop", function()
+    -- credits to: inf yield for there serverhop
+    local serverList = {}
+    
+    for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+    	if v.playing and type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+    		serverList[#serverList + 1] = v.id
+    	end
+    end
+    
+    if #serverList > 0 then
+    	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverList[math.random(1, #serverList)])
+    else
+        error("No servers found")
+    end
+end)
+
+server:AddToolTip("Joins a different server than the one you're currently in.")
+
 game:GetService("RunService").RenderStepped:Connect(function()
     if game.PlaceId ~= 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil or game.PlaceId == 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("inMatch").Value then
         if getgenv().settings.gloveExtend and getgenv().settings.extendOption == "Meat Stick" and getTool():FindFirstChild("Glove").Size ~= Vector3.new(0, 25, 2) then
@@ -1160,6 +1234,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
             getTool().Glove.Size = Vector3.new(2.5, 2.5, 1.7)
         end
         
+        if not isTyping and getgenv().settings.infJump and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
+            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+        
         if getgenv().settings.slappleFarm and game.PlaceId ~= 9431156611 and game.PrivateServerId == "" then
             for _,v in pairs(workspace.Arena:GetDescendants()) do
                 if getgenv().settings.slappleFarm and string.find(v.Name, "Slapple") and v:FindFirstChild("Glove") and v.Glove:FindFirstChildOfClass("TouchTransmitter") then
@@ -1175,6 +1253,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
             getTool():Activate()
         end
         
+        if getTool() ~= nil and getgenv().settings.infGold and getTool().Name == "Golden" then
+            game:GetService("ReplicatedStorage").Goldify:FireServer(true)
+        end
+        
         if getgenv().settings.noTimestop then
             for _, v in next, localPlr.Character:GetChildren() do
                 if v:IsA("Part") or v:IsA("MeshPart") and v.Anchored then
@@ -1184,11 +1266,13 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
         
         if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" and not getgenv().slapFarm then
+            setfpscap(50)
+            
             if game.PlaceId ~= 9431156611 then
                 for _, target in next, game:GetService("Players"):GetPlayers() do
                     if getTool() and target.Character and target.Character:FindFirstChild("Humanoid") ~= nil and target.Character:FindFirstChild("rock") == nil and target.Character:FindFirstChild("Reversed") == nil and getgenv().settings.auraOption == "Blatant" and target:DistanceFromCharacter(localPlr.Character.HumanoidRootPart.Position) <= 20 and getTool().Name == "Default" then
                         game:GetService("ReplicatedStorage").b:FireServer(target.Character.HumanoidRootPart)
-                        task.wait(0.25)
+                        setfpscap(50)
                     end
                 end
             else
@@ -1234,6 +1318,18 @@ game:GetService("RunService").RenderStepped:Connect(function()
         if getgenv().settings.spin and localPlr:GetMouse().Icon ~= "rbxasset://textures/MouseLockedCursor.png" and not getgenv().slapFarm then
             localPlr.Character.HumanoidRootPart.CFrame = localPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(getgenv().settings.spinSpeed), 0)
         end
+    end
+    
+    if getgenv().settings.spamGlove and game.PlaceId ~= 9431156611 and localPlr.Character:FindFirstChild("entered") == nil then
+        for _,v in pairs(workspace.Lobby:GetChildren()) do
+            if v:FindFirstChild("ClickDetector") then
+                fireclickdetector(v.ClickDetector)
+            end
+        end
+    end
+    
+    if getgenv().settings.errorSound and game.PlaceId ~= 9431156611 then
+        game:GetService("ReplicatedStorage").ErrorDeath:FireServer()
     end
     
     if getgenv().settings.autoJoin and getgenv().settings.joinOption == "Normal Arena" then
@@ -1310,24 +1406,15 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
     Duration = 10
 })
 
-while wait(1) do
-    playtime = playtime + 1
-    playLabel:UpdateText("Playtime In Seconds: " .. playtime)
-    
+while wait() do
     if game.PlaceId ~= 9431156611 then
         slapLabel:UpdateText("Players Slapped: " .. timeSlapped)
     end
     
     ragdollLabel:UpdateText("Times Ragdolled: " .. timeRagdolled)
-end
-
-repeat wait() until getTool() ~= nil
-
-if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Legit" then
-    getTool().Glove.Touched:Connect(function(part)
-        if part.Parent:FindFirstChildOfClass("Humanoid") and getgenv().settings.auraSlap and getgenv().settings.auraOption == "Legit" then
-            getTool():Activate()
-            task.wait(0.3)
-        end
-    end)
+    
+    while wait(1) do
+        playtime = playtime + 1
+        playLabel:UpdateText("Playtime In Seconds: " .. playtime)
+    end
 end
