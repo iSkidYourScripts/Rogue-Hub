@@ -53,22 +53,22 @@ sound.SoundId = "rbxassetid://1548304764"
 sound.PlayOnRemove = true
 sound.Volume = 0.5
 
-local ourColor = Color3.fromRGB(153, 148, 148)
-
 function CheckConfigFile()
     if not isfile("/Rogue Hub/Configs/Keybind.ROGUEHUB") then return Enum.KeyCode.RightControl else return Enum.KeyCode[game:GetService("HttpService"):JSONDecode(readfile("/Rogue Hub/Configs/Keybind.ROGUEHUB"))["Key"]] or Enum.KeyCode.RightControl end
 end
 
 local Config = {
     WindowName = "Rogue Hub | " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
-    Color = ourColor,
+    Color = Color3.fromRGB(153, 148, 148),
     Keybind = CheckConfigFile()
 }
 
 local localPlr = game:GetService("Players").LocalPlayer
 local mouseDown = false
 local isLoaded = false
-
+local isKilling = false
+local isTyping = false
+local espColor
 
 getgenv().settings = {
     infJump = false,
@@ -101,6 +101,11 @@ getgenv().settings = {
     espRainbow = false
 }
 
+-- typing detector
+game:GetService("UserInputService").InputBegan:Connect(function(input, typing)
+    isTyping = typing
+end)
+
 if makefolder and isfolder and not isfolder("Rogue Hub") then
     makefolder("Rogue Hub")
 
@@ -118,7 +123,7 @@ local function saveSettings()
     end
 end
 
-function getQuote()
+local function getQuote()
     local userQuotes = game:GetService("HttpService"):JSONDecode(readfile("/Rogue Hub/Configs/Quotes.ROGUEHUB"))
     return userQuotes[math.random(#userQuotes)]
 end
@@ -135,132 +140,6 @@ local function getGun(player)
 end
 
 -- NO MIKEY ALLOWED THAT RETARDS A FUCKING SKID (also if you see this then cool you found the second easter egg)
-
-
--- Esp Stuff (Its 12 in the morning I want to die)
-local highlights = {}
-local currentEspColor = getgenv().settings.espColor or Color3.new(1,0,0)
-
----- Check to see if the game's highlight exists again cause it overwrites ours.
--- IGNORE THIS GARBLE FUCK OF CODE
--- ALL of it is because of how shit roblox highlights are
-spawn(function()
-    while wait() do
-        for _, plr in ipairs(game.Players:GetChildren()) do
-            if not plr.Character then return end
-
-            local char = plr.Character
-            for _,v in ipairs(char:GetChildren()) do
-                if v.Name == "Highlight" then
-                    v.Adornee = nil
-                    v:Destroy()
-                    for _, h in ipairs(highlights) do
-                        if h.ClassName == "Highlight" and h.Name == char.Name then
-                            h.Adornee = nil
-                            h.Adornee = char
-                            h.Enabled = getgenv().settings.playerESP or false
-                            break
-                        end
-                    end
-                end
-            end
-        end
-    end
-end)
-
--- Adds a highlight to the charactter
-function highlightCharacter(Character)
-    if Character.Name == localPlr.Name then return end
-    
-    local high = Instance.new("Highlight", game.Workspace)
-
-    high.Name = Character.Name
-    high.Adornee = Character
-    high.Enabled = getgenv().settings.playerESP or false
-    high.OutlineColor = currentEspColor or Color3.new(1, 0, 0)
-    high.FillColor = high.OutlineColor
-    high.FillTransparency = 0.3
-    high.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    high.OutlineTransparency = 0
-    table.insert(highlights, high)
-    return high
-end
-
--- Player is the Player object, not the character, !WARNING! If player is nil will toggle all highlights
-function highlightPlayer(player, toggle)
-    if (typeof(player) == "Instance" and player.ClassName == "Player") and (player.Character == nil) then return end
-    if toggle then
-        if player == nil then
-            for i,v in ipairs(highlights) do
-                v.Enabled = true
-            end
-        else
-            highlightCharacter(player.Character)
-        end
-    elseif player == nil then
-        for i,v in ipairs(highlights) do
-            v.Enabled = false
-        end
-    else
-        highlightCharacter(player.Character)
-    end
-end
-
--- Changes the color of all the highlights to the *color* argument (duh).
-function changeHighlightColors(color)
-    currentEspColor = color
-
-    if #highlights == 0 then return end
-    for i,v in ipairs(highlights) do
-        v.OutlineColor = color
-        v.FillColor = v.OutlineColor
-    end
-end
-
--- Loop through all the players already in the game.
-for i,player in ipairs(game.Players:GetChildren()) do
-    if not player or not player.Character then return end
-
-    highlightPlayer(player, getgenv().settings.playerESP or false)
-
-
-    player.CharacterAdded:Connect(function(character)
-        for i,v in ipairs(highlights) do
-            if v.Name == character.Name then
-                v.Adornee = character
-            end
-        end
-    end)
-end
-
--- Remove unneeded highlights (cause roblox engine hates highlights for some reason).
-game.Players.PlayerRemoving:Connect(function(player)
-    for i,v in ipairs(highlights) do
-        if v:IsA("Highlight") and v.Name == player.Name then
-            table.remove(highlights, table.find(highlights, v))
-            v:Destroy()
-        end
-    end
-end)
-
--- For when a player joins, 
-game.Players.PlayerAdded:Connect(function(player)
-
-    repeat wait() until player.Character
-
-    highlightPlayer(player, getgenv().settings.playerESP or false)
-
-    -- player died and respawned, Make that character highlighted
-    player.CharacterAdded:Connect(function(character)
-        for i,v in ipairs(highlights) do
-            if v.Name == character.Name then
-                v.Adornee = character
-            end
-        end
-
-    end)
-
-end)
 
 local function esp(object, text, color)
     local espText = Drawing.new("Text")
@@ -295,6 +174,10 @@ local function esp(object, text, color)
                     espText.Text = text
                 end
                 
+                if getgenv().settings.espRainbow then
+                    espText.Color = espColor
+                end
+                
                 espText.Visible = true
                 espText.Size = getgenv().settings.textSize
             else
@@ -312,7 +195,7 @@ end
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
-local mainTab = window:CreateTab("Main")
+local mainTab = window:CreateTab("No-Scope Arcade")
 
 -- Player
 
@@ -351,6 +234,30 @@ local toxicTog = playerSec:CreateToggle("Auto Toxic", getgenv().settings.toxicAu
 end)
 
 toxicTog:AddToolTip("automatically says a toxic phrase when you earn a kill")
+
+local kill = playerSec:CreateButton("Kill All (EXPERIMENTAL)", function()
+    if localPlr.Status.Value == "Alive" and localPlr.Character:FindFirstChild("HumanoidRootPart") then
+        for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+            if v ~= localPlr and v.Status.Value == "Alive" and localPlr.Character:FindFirstChild("HumanoidRootPart") then
+                repeat task.wait(0.4)
+                    isKilling = true
+                    if v.Character and v.Character:FindFirstChild("Head") then
+                        localPlr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,6,0)
+                        workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.Head.Position)
+                        
+                        game:GetService("VirtualUser"):ClickButton1(Vector2.new(-100,-100))
+                    end
+                until v == nil or localPlr.Status.Value == "Dead" or v.Status.Value == "Dead" or not localPlr.Character:FindFirstChild("HumanoidRootPart") or v.Character:FindFirstChild("Head") == nil or v.Character == nil
+                
+                task.wait(1.5)
+            end
+        end
+        
+        isKilling = false
+    end
+end)
+
+kill:AddToolTip("Shoot's everybody in your server. (you need to be alive for this to work)")
 
 -- Visuals
 
@@ -405,6 +312,7 @@ if getgc and hookfunction then
     local shakeButton = visualSec:CreateButton("No Camera Shake", function()
         if not getgenv().cameraShakeDone then
             hookfunction(cambobFunc, function() return end)
+            getgenv().cameraShakeDone = true
     	else
     	    game:GetService("StarterGui"):SetCore("SendNotification", {
                 Title = "Rogue Hub Error",
@@ -453,9 +361,6 @@ espSec:CreateToggle("Enabled", getgenv().settings.playerESP or false, function(b
     saveSettings()
 
     if getgenv().settings.playerESP and isLoaded then
-
-        highlightPlayer(nil, true)
-
         for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
             if player ~= localPlr and player.Character and getgenv().settings.playerESP then
                 esp(player.Character:WaitForChild("Head"), player.Name, Color3.fromRGB(255,255,255))
@@ -465,8 +370,6 @@ espSec:CreateToggle("Enabled", getgenv().settings.playerESP or false, function(b
                 end)
             end
         end
-    elseif isLoaded then
-        highlightPlayer(nil, false)
     end
 end)
 
@@ -497,7 +400,6 @@ end)
 
 local colorESP = espSec:CreateColorpicker("ESP Color", function(color)
 	getgenv().settings.espColor = color
-    changeHighlightColors(color)
 	saveSettings()
 end)
 
@@ -578,7 +480,7 @@ partDrop:SetOption(getgenv().settings.aimbotPart or "Head")
 if getgc then
     local gunMods = mainTab:CreateSection("Gun Mods")
 
-    gunMods:CreateToggle("No Spread", false, function(bool)
+    gunMods:CreateToggle("No Spread", getgenv().settings.noSpread or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.noSpread = bool
 
@@ -587,9 +489,11 @@ if getgc then
         else
             ModifyGuns("Spread", 5)
         end
+        
+        saveSettings()
     end)
 
-    gunMods:CreateToggle("No Recoil", false, function(bool)
+    gunMods:CreateToggle("No Recoil", getgenv().settings.noRecoil or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.noRecoil = bool
 
@@ -598,9 +502,11 @@ if getgc then
         else
             ModifyGuns("RecoilMult", 4)
         end
+        
+        saveSettings()
     end)
 
-    local oneHitTog = gunMods:CreateToggle("One Hit", false, function(bool)
+    local oneHitTog = gunMods:CreateToggle("One Hit", getgenv().settings.oneHit or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.oneHit = bool
 
@@ -611,11 +517,13 @@ if getgc then
             ModifyGuns("Damage", 65)
             ModifyGuns("HeadshotDmg", 90)
         end
+        
+        saveSettings()
     end)
     
     oneHitTog:AddToolTip("makes your weapon instantly kill players")
 
-    local fireRateTog = gunMods:CreateToggle("No Fire-Rate", false, function(bool)
+    local fireRateTog = gunMods:CreateToggle("No Fire-Rate", getgenv().settings.rateFire or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.rateFire = bool
 
@@ -624,11 +532,13 @@ if getgc then
         else
             ModifyGuns("FireRate", 0.25)
         end
+        
+        saveSettings()
     end)
     
     fireRateTog:AddToolTip("the shooting delay of your weapon")
 
-    gunMods:CreateToggle("Instant Equip", false, function(bool)
+    gunMods:CreateToggle("Instant Equip", getgenv().settings.equipInstantly or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.equipInstantly = bool
 
@@ -637,9 +547,11 @@ if getgc then
         else
             ModifyGuns("EquipTime", 0.4)
         end
+        
+        saveSettings()
     end)
 
-    gunMods:CreateToggle("Instant Reload", false, function(bool)
+    gunMods:CreateToggle("Instant Reload", getgenv().settings.reloadInstantly or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.reloadInstantly = bool
 
@@ -648,9 +560,11 @@ if getgc then
         else
             ModifyGuns("ReloadTime", 0.28)
         end
+        
+        saveSettings()
     end)
 
-    gunMods:CreateToggle("Infinite Clip Size", false, function(bool)
+    gunMods:CreateToggle("Infinite Clip Size", getgenv().settings.clipInf or false, function(bool)
         if not isLoaded then return end
         getgenv().settings.clipInf = bool
 
@@ -659,13 +573,17 @@ if getgc then
         else
             ModifyGuns("ClipSize", 7)
         end
+        
+        saveSettings()
     end)
 
-    local speedSlider = gunMods:CreateSlider("Walk Speed", 20,500,20,true, function(value)
+    local speedSlider = gunMods:CreateSlider("Walk Speed", 20,500,getgenv().settings.walkSpeed or 20,true, function(value)
         if not isLoaded then return end
         getgenv().settings.walkSpeed = value  
 
         ModifyGuns("WalkSpeed", getgenv().settings.walkSpeed)
+        
+        saveSettings()
     end)
     
     speedSlider:AddToolTip("Changes your speed, sometimes makes your viewmodel have a seizure (dont use if you suffer from epilepsy, im not kidding)")
@@ -714,7 +632,7 @@ local infoSec = infoTab:CreateSection("Credits")
 
 local req = http_request or request or syn.request
 
-infoSec:CreateButton("Father of Rogue Hub: Kitzoon#7750", function()
+infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -728,8 +646,28 @@ infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     setclipboard("Kyron#6083")
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Script Notification",
+        Title = "Rogue Hub Note",
         Text = "Copied Kyron's discord username and tag to your clipboard.",
+        Duration = 5
+    })
+end)
+
+infoSec:CreateButton("Consider donating on PayPal!", function()
+    setclipboard("https://paypal.me/RogueHub")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
+        Duration = 5
+    })
+end)
+
+infoSec:CreateButton("Consider donating on Bitcoin!", function()
+    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
         Duration = 5
     })
 end)
@@ -748,7 +686,7 @@ infoSec:CreateButton("Join us on discord!", function()
             Body = game:GetService("HttpService"):JSONEncode(
             {
                 ["args"] = {
-                ["code"] = "VdrHU8KP7c",
+                ["code"] = "c4xWZ4G4bx",
                 },
                         
                 ["cmd"] = "INVITE_BROWSER",
@@ -756,8 +694,8 @@ infoSec:CreateButton("Join us on discord!", function()
             })
         })
     else
-        setclipboard("https://discord.gg/VdrHU8KP7c")
-    
+        setclipboard("https://discord.gg/c4xWZ4G4bx")
+        
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Rogue Hub Note",
             Text = "Copied our discord server to your clipboard.",
@@ -814,17 +752,17 @@ game:GetService("RunService").RenderStepped:Connect(function()
         local hue = tick() % 10 / 10
         local rainbow = Color3.fromHSV(hue, 1, 1)
         
-        changeHighlightColors(rainbow)
         colorESP:UpdateColor(rainbow)
+        espColor = rainbow
     end
 
     if localPlr.Character and #game:GetService("Workspace").CurrentCamera:GetChildren() ~= 0 then
-        if getgenv().settings.infJump and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
-            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        if getgenv().settings.triggerBot and not isKilling and localPlr:GetMouse().Target and localPlr:GetMouse().Target.Parent:FindFirstChild("Humanoid") and not localPlr:GetMouse().Target.Parent:FindFirstChild("ForceField") and getGun(localPlr:GetMouse().Target.Parent) ~= nil or getgenv().settings.triggerBot and localPlr:GetMouse().Target and localPlr:GetMouse().Target.Parent.Parent:FindFirstChild("Humanoid") and not localPlr:GetMouse().Target.Parent.Parent:FindFirstChild("ForceField") and getGun(localPlr:GetMouse().Target.Parent.Parent) ~= nil then
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(-100,-100))
         end
         
-        if getgenv().settings.triggerBot and localPlr:GetMouse().Target and localPlr:GetMouse().Target.Parent:FindFirstChild("Humanoid") and not localPlr:GetMouse().Target.Parent:FindFirstChild("ForceField") and getGun(localPlr:GetMouse().Target.Parent) ~= nil or getgenv().settings.triggerBot and localPlr:GetMouse().Target and localPlr:GetMouse().Target.Parent.Parent:FindFirstChild("Humanoid") and not localPlr:GetMouse().Target.Parent.Parent:FindFirstChild("ForceField") and getGun(localPlr:GetMouse().Target.Parent.Parent) ~= nil then
-            mouse1click()
+        if not isTyping and getgenv().settings.infJump and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
+            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end
 
         if getgenv().settings.bunnyHop and localPlr.Character:WaitForChild("Humanoid") and localPlr.Character.Humanoid.FloorMaterial ~= Enum.Material.Air and localPlr.Character.Humanoid.MoveDirection ~= Vector3.new(0,0,0) then
@@ -832,7 +770,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
             task.wait(2)
         end
 
-        if getgenv().settings.aimBotTog and mouseDown or getgenv().settings.aimBotTog and getgenv().settings.autoLock then
+        if getgenv().settings.aimBotTog and not isKilling and mouseDown or getgenv().settings.aimBotTog and getgenv().settings.autoLock then
             for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
                 if player ~= localPlr and player.Character and player.Status.Value ~= "Dead" and not player.Character:FindFirstChild("ForceField") and player.Character:FindFirstChild(getgenv().settings.aimbotPart) then
                     local partPos, onScreen = game:GetService("Workspace").CurrentCamera:WorldToViewportPoint(player.Character[getgenv().settings.aimbotPart].Position)
@@ -856,7 +794,7 @@ end)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rogue Hub Message",
-    Text = "Successfully loaded.",
+    Text = "It's almost 2023!",
     Duration = 5
 })
 
@@ -878,7 +816,7 @@ end
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Please Note",
-    Text = "The rogue hub version you are using is currently in alpha, bugs may occur.",
+    Title = "Rogue Hub Fact",
+    Text = "Rogue hub has over 3500+ lines of code!",
     Duration = 10
 })
