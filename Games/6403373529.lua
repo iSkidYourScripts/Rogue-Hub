@@ -461,7 +461,7 @@ if game.PlaceId ~= 9431156611 then
         local togInvis = playerSec:CreateToggle("Invisible (FE)", false, function(bool)
             getgenv().settings.invis = bool
             
-            if not getgenv().settings.invis and isLoaded and localPlr.leaderstats.Slaps.Value >= 666 then
+            if not getgenv().settings.invis and isLoaded and localPlr.leaderstats.Slaps.Value >= 666 and localPlr.Character:FindFirstChild("entered") then
                 game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
                 
                 localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
@@ -475,7 +475,7 @@ if game.PlaceId ~= 9431156611 then
             --end
             
             if getgenv().settings.invis then
-                if localPlr.leaderstats.Slaps.Value >= 666 and localPlr.leaderstats.Glove.Value ~= "Ghost" then
+                if localPlr.leaderstats.Slaps.Value >= 666 and localPlr.leaderstats.Glove.Value ~= "Ghost" and not localPlr.Character:FindFirstChild("entered") then
                     fireclickdetector(workspace.Lobby.Ghost.ClickDetector)
                 elseif localPlr.leaderstats.Slaps.Value <= 666 and getgenv().settings.invis then
                     game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -508,8 +508,47 @@ if game.PlaceId ~= 9431156611 then
         
         togInvis:AddToolTip("Uses a glitch in Slap Battles to make you invisible. (Requires 666 slaps or more)")
         
-        local spamEquip = playerSec:CreateToggle("Godmode (FE)", getgenv().settings.infGold or false, function(bool)
+        local spamEquip = playerSec:CreateToggle("Godmode (FE)", false, function(bool)
             getgenv().settings.infGold = bool
+            
+            if not getgenv().settings.infGold and isLoaded and localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.Character:FindFirstChild("entered") then
+                game:GetService("ReplicatedStorage").Goldify:FireServer(false, BrickColor.new(24))
+                
+                localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+                return
+            end
+            
+            if getgenv().settings.infGold and isLoaded then
+                if localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.leaderstats.Glove.Value ~= "Golden" and not localPlr.Character:FindFirstChild("entered") then
+                    fireclickdetector(workspace.Lobby.Golden.ClickDetector)
+                elseif localPlr.leaderstats.Slaps.Value <= 2500 and getgenv().settings.invis then
+                    game:GetService("StarterGui"):SetCore("SendNotification", {
+                        Title = "Rogue Hub Error",
+                        Text = "You don't have enough slaps for the golden glove! (2500 Slaps)",
+                        Duration = 5
+                    })
+                    return
+                end
+                
+                wait(0.3)
+                
+                game:GetService("ReplicatedStorage").Goldify:FireServer(true, BrickColor.new(24))
+                
+                game:GetService("StarterGui"):SetCore("SendNotification", {
+                    Title = "Godmode Activated",
+                    Text = "You can now equip any other glove you want!",
+                    Duration = 5
+                })
+            
+                repeat wait() until localPlr.Character:FindFirstChild("entered")
+                
+                for _,v in pairs(game.Lighting:GetChildren()) do
+                    if v.Name ~= "DepthOfField" or v.Name ~= "Bloom" or v.Name ~= "ColorCorrection" then
+                        v:Destroy()    
+                    end
+                end
+            end
+            
             saveSettings()
         end)
         
@@ -1345,8 +1384,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
         if game.PlaceId == 9431156611 then return end
         
         if not localPlr.Character:FindFirstChild("entered") and localPlr.Character:FindFirstChild("HumanoidRootPart") then
-            firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport2, 0)
-            firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport2, 1)
+            repeat wait(0.5)
+                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport2, 0)
+                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport2, 1)
+            until localPlr.Character:FindFirstChild("entered") ~= nil
         end
     end
     
