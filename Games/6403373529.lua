@@ -54,11 +54,11 @@ else
 	arenaVoid.Transparency = 1
 end
 
-local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
+-- local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
 
-if teleportFunc then
-    teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
-end
+-- if teleportFunc then
+--     teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
+-- end
 
 -- walkspeed anticheat bypass
 if game.PlaceId == 9431156611 and getrawmetatable and hookmetamethod then
@@ -155,7 +155,8 @@ getgenv().settings = {
     jumpPowerKey = "NONE",
     slappleFarm = false,
     spamGlove = false,
-    infGold = false
+    infGold = false,
+    autoItems = false
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -318,6 +319,15 @@ if game.PlaceId ~= 9431156611 and game.PlaceId ~= 11520107397 and game.PrivateSe
     end)
         
     slapple:AddToolTip("Auto farm's slapple gloves for you. (gets you free slaps)")
+end
+
+if game.PlaceId == 9431156611 then
+    local item = playerSec:CreateToggle("Auto Get All Items", getgenv().settings.autoItems or false, function(bool)
+        getgenv().settings.autoItems = bool
+        saveSettings()
+    end)
+    
+    item:AddToolTip("Automatically finds items in the map and grabs them for you.")
 end
 
 playerSec:CreateToggle("Autoclicker", getgenv().settings.autoClicker or false, function(bool)
@@ -848,7 +858,7 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
                     local gotAcid = false
                     local gotLava = false
                     
-                    if getTool() ~= nil and getgenv().slapFarm and killCount ~= 2 then
+                    if getTool() ~= nil and getgenv().slapFarm then
                         pcall(function()
                             localPlr.Character.HumanoidRootPart.Touched:Connect(function(part)
                                 if part.Name == "acidGod" and gotAcid == false then
@@ -862,14 +872,23 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
                             
                             repeat task.wait()
                                 if getTool().Name == "Pack-A-Punch" then
-                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.Position * CFrame.new(0,6.3,0)
+                                    localPlr.Character.inZone.Value = true
+                                    localPlr.Character.Ragdolled.Value = true
+                                    localPlr.Character.inMatch.Value = false
+                                    localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,6.3,0)
                                     game:GetService("ReplicatedStorage").Events.Slap:FireServer(target.Character["Right Arm"])
                                 else
+                                    localPlr.Character.inZone.Value = true
+                                    localPlr.Character.Ragdolled.Value = true
+                                    localPlr.Character.inMatch.Value = false
                                     localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3.5)
                                     getTool():Activate()
                                 end
                             until target.Character:FindFirstChild("Dead") ~= nil and target.Character:FindFirstChild("Dead").Value or getgenv().slapFarm == false or gotAcid or gotLava
                             
+                            localPlr.Character.inZone.Value = false
+                            localPlr.Character.Ragdolled.Value = false
+                            localPlr.Character.inMatch.Value = true
                             localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running)
                         end)
                     end
@@ -1329,6 +1348,15 @@ game:GetService("RunService").RenderStepped:Connect(function()
                     target.Character:FindFirstChild("rock").TouchInterest:Destroy()
                 end
             end
+        end
+        
+        if getgenv().settings.autoItems and game.PlaceId == 9431156611 and localPlr.Character:FindFirstChild("inMatch").Value then
+            for _, v in pairs(workspace:GetChildren()) do
+                if v:IsA("Tool") and v.Handle:FindFirstChild("TouchInterest") ~= nil then
+                    firetouchinterest(localPlr.Character.HumanoidRootPart, v.Handle, 0)
+                    firetouchinterest(localPlr.Character.HumanoidRootPart, v.Handle, 1)
+                end
+            end    
         end
         
         if getgenv().settings.playerForce then
