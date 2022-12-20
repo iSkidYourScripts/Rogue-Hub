@@ -35,7 +35,7 @@ local response = req({
     Method = "GET"
 })
 
-if response.Body ~= "404: Not Found" then
+if response.StatusCode ~= 404 then
     -- Anti AFK
     game:GetService("Players").LocalPlayer.Idled:Connect(function()
         game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 2, true, nil, 0)
