@@ -54,11 +54,11 @@ else
 	arenaVoid.Transparency = 1
 end
 
--- local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
+local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
 
--- if teleportFunc then
---     teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
--- end
+if teleportFunc then
+    teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
+end
 
 -- walkspeed anticheat bypass
 if game.PlaceId == 9431156611 and getrawmetatable and hookmetamethod then
