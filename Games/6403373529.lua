@@ -1324,13 +1324,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
         
         if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" and not getgenv().slapFarm then
-            setfpscap(50)
-            
             if game.PlaceId ~= 9431156611 then
-                for _, target in next, game:GetService("Players"):GetPlayers() do
+                for _, target in pairs(game:GetService("Players"):GetPlayers()) do
                     if getTool() and target.Character and target.Character:FindFirstChild("Humanoid") ~= nil and target.Character:FindFirstChild("rock") == nil and target.Character:FindFirstChild("Reversed") == nil and getgenv().settings.auraOption == "Blatant" and target:DistanceFromCharacter(localPlr.Character.HumanoidRootPart.Position) <= 20 and getTool().Name == "Default" then
                         game:GetService("ReplicatedStorage").b:FireServer(target.Character.HumanoidRootPart)
-                        setfpscap(50)
                     end
                 end
             else
