@@ -1292,10 +1292,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
             getTool().Glove.Size = Vector3.new(2.5, 2.5, 1.7)
         end
         
-        if not isTyping and getgenv().settings.infJump and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
-            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-        end
-        
         if getgenv().settings.slappleFarm and game.PlaceId ~= 9431156611 and game.PrivateServerId == "" then
             for _,v in pairs(workspace.Arena:GetDescendants()) do
                 if getgenv().settings.slappleFarm and string.find(v.Name, "Slapple") and v:FindFirstChild("Glove") and v.Glove:FindFirstChildOfClass("TouchTransmitter") then
@@ -1382,6 +1378,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
         if getgenv().settings.spin and localPlr:GetMouse().Icon ~= "rbxasset://textures/MouseLockedCursor.png" and not getgenv().slapFarm then
             localPlr.Character.HumanoidRootPart.CFrame = localPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(getgenv().settings.spinSpeed), 0)
         end
+    end
+		
+    if not isTyping and getgenv().settings.infJump and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) and localPlr.Character and localPlr.Character:FindFirstChild("Humanoid") then
+	localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
     end
     
     if getgenv().settings.spamGlove and game.PlaceId ~= 9431156611 and localPlr.Character:FindFirstChild("entered") == nil then
