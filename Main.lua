@@ -43,7 +43,18 @@ if response.StatusCode ~= 404 then
         game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 2, false, nil, 0)
     end)
     
-    repeat task.wait() until game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) ~= nil
+    -- anticheat bypass, ty WhoIsE (staff manager at the krnl discord server) for this
+    if getconnections then
+        for _, connection in pairs(getconnections(game:GetService("LogService").MessageOut)) do
+            connection:Disable()
+        end
+
+        for _, connection in pairs(getconnections(game:GetService("ScriptContext").Error)) do
+            connection:Disable()
+        end
+    end
+    
+    repeat task.wait() until game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
     
     local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
 
