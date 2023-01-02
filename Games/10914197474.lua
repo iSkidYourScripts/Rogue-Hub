@@ -12,7 +12,7 @@ function CheckConfigFile()
 end
 
 local Config = {
-    WindowName = "Rogue Hub | " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Slap Battles",
+    WindowName = "Rogue Hub | " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Killstreak test",
     Color = Color3.fromRGB(201,144,150),
     Keybind = CheckConfigFile()
 }
