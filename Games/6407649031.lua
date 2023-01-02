@@ -1,15 +1,3 @@
--- anticheat bypass, ty WhoIsE (staff manager at the krnl discord server) for this
-
-if getconnections then
-    for _, connection in pairs(getconnections(game:GetService("LogService").MessageOut)) do
-        connection:Disable()
-    end
-    
-    for _, connection in pairs(getconnections(game:GetService("ScriptContext").Error)) do
-        connection:Disable()
-    end
-end
-
 if getgenv().Rogue_AlreadyLoaded ~= nil then error("Rogue Hub was already found running or you have other scripts executed!") return else getgenv().Rogue_AlreadyLoaded = 0 end
 
 if game.PlaceId ~= 6407649031 then return end
