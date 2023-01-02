@@ -15,7 +15,7 @@ function CheckConfigFile()
 end
 
 local Config = {
-    WindowName = "Rogue Hub | " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+    WindowName = "Rogue Hub | " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Skate Park",
     Color = ourColor,
     Keybind = CheckConfigFile()
 }
