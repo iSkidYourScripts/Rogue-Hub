@@ -650,6 +650,24 @@ if game.PlaceId == 9431156611 then
     jesussy:AddToolTip("Lets you walk on water.")
 end
 
+local hipTog = playerSec:CreateToggle("Hip Height Edit", getgenv().settings.hipHeight or false, function(bool)
+    getgenv().settings.hipHeight = bool
+	saveSettings()
+end)
+
+hipTog:AddToolTip("edits your hip height and makes you taller, useful for avoiding slaps or fighting against another exploiter.")
+
+hipTog:CreateKeybind(tostring(getgenv().settings.hipHeightKey or "NONE"):gsub("Enum.KeyCode.", ""), function(key)
+	if key == "Escape" or key == "Backspace" then key = "NONE" end
+	
+    if key == "NONE" then return else getgenv().settings.hipHeightKey = Enum.KeyCode[key] end
+end)
+
+playerSec:CreateSlider("Hip Height", 1,20.1,getgenv().settings.hipHeightNum or 1,true, function(value)
+	getgenv().settings.hipHeightNum = value
+	saveSettings()
+end)
+
 local spinTog = playerSec:CreateToggle("Spin", getgenv().settings.spin or false, function(bool)
     getgenv().settings.spin = bool
     saveSettings()
@@ -781,22 +799,6 @@ if game.PlaceId == 9431156611 then
     butPhase:AddToolTip("Phases you through the lobby (only works when the game hasn't started)")
 end
 
-local hipTog = playerSec:CreateToggle("Hip Height Edit", getgenv().settings.hipHeight or false, function(bool)
-    getgenv().settings.hipHeight = bool
-	saveSettings()
-end)
-
-hipTog:CreateKeybind(tostring(getgenv().settings.hipHeightKey or "NONE"):gsub("Enum.KeyCode.", ""), function(key)
-	if key == "Escape" or key == "Backspace" then key = "NONE" end
-	
-    if key == "NONE" then return else getgenv().settings.hipHeightKey = Enum.KeyCode[key] end
-end)
-
-playerSec:CreateSlider("Hip Height", 1,20.1,getgenv().settings.hipHeightNum or 1,true, function(value)
-	getgenv().settings.hipHeightNum = value
-	saveSettings()
-end)
-
 -- Glove
 
 local gloveSec = mainTab:CreateSection("Glove")
@@ -912,13 +914,13 @@ farmTog:AddToolTip(toolName)
 
 if game.PlaceId ~= 9431156611 then
     if game.PlaceId ~= 11520107397 then
-        local baller = gloveSec:CreateToggle("Baller Slap Farm", false, function(bool)
+        local baller = gloveSec:CreateToggle("Baller Spammer", false, function(bool)
             getgenv().settings.ballerFarm = bool
             saveSettings()
             
             if getgenv().settings.ballerFarm and localPlr.leaderstats.Slaps.Value >= 20000 and localPlr.leaderstats.Glove.Value ~= "Baller" and not localPlr.Character:FindFirstChild("entered") then
                 fireclickdetector(workspace.Lobby.Baller.ClickDetector)
-            elseif localPlr.leaderstats.Slaps.Value <= 20000 then
+            elseif localPlr.leaderstats.Slaps.Value <= 20000 and getgenv().settings.ballerFarm then
                 game:GetService("StarterGui"):SetCore("SendNotification", {
                     Title = "Rogue Hub Error",
                     Text = "You don't have enough slaps for the baller glove! (20000 Slaps)",
