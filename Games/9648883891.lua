@@ -394,7 +394,7 @@ end)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rogue Hub Message",
-    Text = "Successfully loaded.",
+    Text = "Sucessfully Loaded!",
     Duration = 5
 })
 
