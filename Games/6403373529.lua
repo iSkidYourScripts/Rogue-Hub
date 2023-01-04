@@ -423,8 +423,10 @@ local noRagTog = playerSec:CreateToggle("Anti Ragdoll", getgenv().settings.noRag
                 local oldCFrame = localPlr.Character.HumanoidRootPart.CFrame
                 
                 repeat task.wait()
-                    localPlr.Character:FindFirstChild("HumanoidRootPart").CFrame = oldCFrame
-                until localPlr.Character:FindFirstChild("HumanoidRootPart") == nil or localPlr.Character.Ragdolled.Value == false
+                    localPlr.Character.Head.Anchored = true
+                until localPlr.Character:FindFirstChild("Head") == nil or localPlr.Character.Ragdolled.Value == false
+                
+                localPlr.Character.Head.Anchored = false
             end
         end)
     end
@@ -1622,7 +1624,7 @@ end)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rogue Hub Message",
-    Text = "It's almost 2023!",
+    Text = "Sucessfully Loaded!",
     Duration = 5
 })
 
