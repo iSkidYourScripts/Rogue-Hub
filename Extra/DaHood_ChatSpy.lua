@@ -84,9 +84,4 @@ end);
 -- // Update Chat Frame
 local chatFrame = LocalPlayer.PlayerGui.Chat.Frame;
 chatFrame.ChatChannelParentFrame.Visible = getgenv().settings.chatSpy;
-
-if getgenv().settings.chatSpy then
-    chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
-else
-    chatFrame.ChatBarParentFrame.Position = {0, 0}, {0, 0}
-end
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
