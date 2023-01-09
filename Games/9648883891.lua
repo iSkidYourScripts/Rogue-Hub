@@ -40,9 +40,7 @@ getgenv().settings = {
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
     makefolder("Rogue Hub")
-    
     makefolder("Rogue Hub/Configs")
-    makefolder("Rogue Hub/Data")
 end
 
 if readfile and isfile and isfile("Rogue Hub/Configs/FestivalTycoon_Config.ROGUEHUB") then
@@ -115,7 +113,7 @@ localPlr.CharacterAdded:Connect(function()
     humanoid.WalkSpeed = getgenv().settings.walkSpeed
 end)
 
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Main")
 
