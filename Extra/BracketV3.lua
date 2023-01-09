@@ -377,13 +377,13 @@ function Library:CreateWindow(Config, Parent)
 					if State then
 						Toggle.Toggle.BackgroundColor3 = Config.Color
 						
-						if getgenv().RogueOn and getgenv().settings.toggleSounds then
+						if getgenv().RogueOn and getgenv().settings.toggleSounds and getgenv().isLoaded then
 						    getgenv().RogueOn:Play()
 						end
 					elseif not State then
 						Toggle.Toggle.BackgroundColor3 = Color3.fromRGB(50,50,50)
 						
-						if getgenv().RogueOff and getgenv().settings.toggleSounds then
+						if getgenv().RogueOff and getgenv().settings.toggleSounds and getgenv().isLoaded then
 						    getgenv().RogueOff:Play()
 						end
 					end
