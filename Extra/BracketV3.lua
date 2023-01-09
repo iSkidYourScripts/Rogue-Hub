@@ -353,12 +353,12 @@ function Library:CreateWindow(Config, Parent)
                 getgenv().RogueOn = Instance.new("Sound", workspace)
                 getgenv().RogueOn.Name = "ToggleOn"
                 getgenv().RogueOn.SoundId = asset("Rogue Hub/Extra/ToggleOn.mp3")
-                getgenv().RogueOn.Volume = 2.5
+                getgenv().RogueOn.Volume = 1
                 
                 getgenv().RogueOff = Instance.new("Sound", workspace)
                 getgenv().RogueOff.Name = "ToggleOff"
                 getgenv().RogueOff.SoundId = asset("Rogue Hub/Extra/ToggleOff.mp3")
-                getgenv().RogueOff.Volume = 2.5
+                getgenv().RogueOff.Volume = 1
             end
 			
 			function SectionInit:CreateToggle(Name, Default, Callback)
@@ -421,6 +421,13 @@ function Library:CreateWindow(Config, Parent)
 				function ToggleInit:GetState(State)
 					return ToggleState
 				end
+				
+				local isTyping = false
+	
+                -- typing detector
+                game:GetService("UserInputService").InputBegan:Connect(function(input, typing)
+                    isTyping = typing
+                end)
 
 				function ToggleInit:CreateKeybind(Bind,Callback)
 					local KeybindInit = {}
@@ -444,7 +451,7 @@ function Library:CreateWindow(Config, Parent)
 					end)
 
 					UserInputService.InputBegan:Connect(function(Input)
-						if WaitingForBind and Input.UserInputType == Enum.UserInputType.Keyboard then
+						if WaitingForBind and Input.UserInputType == Enum.UserInputType.Keyboard and not isTyping then
 							local Key = tostring(Input.KeyCode):gsub("Enum.KeyCode.", "")
 							if not table.find(Blacklist, Key) then
 								Toggle.Keybind.Text = "[ " .. Key .. " ]"
@@ -454,7 +461,7 @@ function Library:CreateWindow(Config, Parent)
 								Selected = "NONE"
 							end
 							WaitingForBind = false
-						elseif Input.UserInputType == Enum.UserInputType.Keyboard then
+						elseif Input.UserInputType == Enum.UserInputType.Keyboard and not isTyping then
 							local Key = tostring(Input.KeyCode):gsub("Enum.KeyCode.", "")
 							if Key == Selected then
 								ToggleState = not ToggleState
