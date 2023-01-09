@@ -114,7 +114,7 @@ local Config = {
 }
 
 local localPlr = game:GetService("Players").LocalPlayer
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Slap Battles")
 
@@ -276,10 +276,8 @@ localPlr.CharacterAdded:Connect(function()
                 local oldCFrame = localPlr.Character.HumanoidRootPart.CFrame
                 
                 repeat task.wait()
-                    localPlr.Character.Head.Anchored = true
-                until localPlr.Character:FindFirstChild("Head") == nil or localPlr.Character.Ragdolled.Value == false
-                
-                localPlr.Character.Head.Anchored = false
+                    localPlr.Character.HumanoidRootPart.CFrame = oldCFrame
+                until localPlr.Character:FindFirstChild("HumanoidRootPart") == nil or localPlr.Character.Ragdolled.Value == false
             end
         end)
     end
@@ -1413,6 +1411,16 @@ local camZoom = miscSec:CreateToggle("Infinite Zoom", false, function(bool)
 end)
 
 camZoom:AddToolTip("Lets you infinitely change your camera's zoom.")
+
+local asset = getcustomasset or syn and getsynasset
+
+if asset and isfile and writefile then
+    local soundsToggled = miscSec:CreateToggle("Toggle Sounds", false, function(bool)
+        getgenv().settings.toggleSounds = bool
+    end)
+    
+    soundsToggled:AddToolTip("plays a sound when enabling or disabling a feature.")
+end
 
 game:GetService("RunService").RenderStepped:Connect(function()
     if game.PlaceId ~= 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil or game.PlaceId == 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("inMatch").Value then
