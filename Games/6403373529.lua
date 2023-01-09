@@ -276,8 +276,10 @@ localPlr.CharacterAdded:Connect(function()
                 local oldCFrame = localPlr.Character.HumanoidRootPart.CFrame
                 
                 repeat task.wait()
-                    localPlr.Character.HumanoidRootPart.CFrame = oldCFrame
-                until localPlr.Character:FindFirstChild("HumanoidRootPart") == nil or localPlr.Character.Ragdolled.Value == false
+                    localPlr.Character.Head.Anchored = true
+                until localPlr.Character:FindFirstChild("Head") == nil or localPlr.Character.Ragdolled.Value == false
+                
+                localPlr.Character.Head.Anchored = false
             end
         end)
     end
