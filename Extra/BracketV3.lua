@@ -50,12 +50,10 @@ function Library:CreateWindow(Config, Parent)
 	local Topbar = Main.Topbar
 	local TContainer = Holder.TContainer
 	local TBContainer = Holder.TBContainer.Holder
-	--[[
-	-- idk probably fix for exploits that dont have this function
+	
 	if syn and syn.protect_gui then
 		syn.protect_gui(Screen)
 	end
-	]]
 	
 	Screen.Name =  HttpService:GenerateGUID(false)
 	Screen.Parent = Parent
@@ -128,9 +126,18 @@ function Library:CreateWindow(Config, Parent)
 			end
 		end
 	end
+	
+	local isTyping = false
+	
+	-- typing detector
+    game:GetService("UserInputService").InputBegan:Connect(function(input, typing)
+        isTyping = typing
+    end)
 
 	function WindowInit:Toggle(State)
-		Toggle(State)
+	    if not isTyping then
+		    Toggle(State)
+		end
 	end
 
 	function WindowInit:ChangeColor(Color)
@@ -329,6 +336,10 @@ function Library:CreateWindow(Config, Parent)
 			end
 			
 			local asset = getcustomasset or syn and getsynasset
+			
+			if asset and isfile and writefile and not isfile("Rogue Hub/Extra") then
+                writefile("Rogue Hub/Extra")
+            end
             
             if asset and isfile and writefile and not isfile("Rogue Hub/Extra/ToggleOn.mp3") then
                 writefile("Rogue Hub/Extra/ToggleOn.mp3", game:HttpGet("https://github.com/Kitzoon/Rogue-Hub/blob/main/Extra/ToggleOn.mp3?raw=true"))
@@ -365,10 +376,16 @@ function Library:CreateWindow(Config, Parent)
 				local function SetState(State)
 					if State then
 						Toggle.Toggle.BackgroundColor3 = Config.Color
-						getgenv().RogueOn:Play()
+						
+						if getgenv().RogueOn and getgenv().settings.toggleSounds then
+						    getgenv().RogueOn:Play()
+						end
 					elseif not State then
 						Toggle.Toggle.BackgroundColor3 = Color3.fromRGB(50,50,50)
-						getgenv().RogueOff:Play()
+						
+						if getgenv().RogueOff and getgenv().settings.toggleSounds then
+						    getgenv().RogueOff:Play()
+						end
 					end
 					ToggleState = State
 					Callback(State)
