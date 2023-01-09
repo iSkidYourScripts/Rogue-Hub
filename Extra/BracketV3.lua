@@ -337,8 +337,8 @@ function Library:CreateWindow(Config, Parent)
 			
 			local asset = getcustomasset or syn and getsynasset
 			
-			if asset and isfile and writefile and not isfile("Rogue Hub/Extra") then
-                writefile("Rogue Hub/Extra")
+			if asset and isfile and writefile and not isfolder("Rogue Hub/Extra") then
+                makefolder("Rogue Hub/Extra")
             end
             
             if asset and isfile and writefile and not isfile("Rogue Hub/Extra/ToggleOn.mp3") then
