@@ -35,9 +35,7 @@ local mainTab = window:CreateTab("Skate Park")
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
     makefolder("Rogue Hub")
-    
     makefolder("Rogue Hub/Configs")
-    makefolder("Rogue Hub/Data")
 end
 
 if readfile and isfile and isfile("Rogue Hub/Configs/SkatePark_Config.ROGUEHUB") then
