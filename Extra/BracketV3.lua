@@ -353,12 +353,12 @@ function Library:CreateWindow(Config, Parent)
                 getgenv().RogueOn = Instance.new("Sound", workspace)
                 getgenv().RogueOn.Name = "ToggleOn"
                 getgenv().RogueOn.SoundId = asset("Rogue Hub/Extra/ToggleOn.mp3")
-                getgenv().RogueOn.Volume = 1
+                getgenv().RogueOn.Volume = 2.5
                 
                 getgenv().RogueOff = Instance.new("Sound", workspace)
                 getgenv().RogueOff.Name = "ToggleOff"
                 getgenv().RogueOff.SoundId = asset("Rogue Hub/Extra/ToggleOff.mp3")
-                getgenv().RogueOff.Volume = 1
+                getgenv().RogueOff.Volume = 2.5
             end
 			
 			function SectionInit:CreateToggle(Name, Default, Callback)
