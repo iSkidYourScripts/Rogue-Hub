@@ -340,16 +340,14 @@ function Library:CreateWindow(Config, Parent)
             
             if asset and isfile and writefile and isfile("Rogue Hub/Extra/ToggleOn.mp3") and isfile("Rogue Hub/Extra/ToggleOff.mp3") then
                 getgenv().RogueOn = Instance.new("Sound", workspace)
-                sound.Name = "ToggleOn"
-                sound.SoundId = asset("Rogue Hub/Extra/ToggleOn.mp3")
-                sound.PlayOnRemove = false
-                sound.Volume = 0.5
+                getgenv().RogueOn.Name = "ToggleOn"
+                getgenv().RogueOn.SoundId = asset("Rogue Hub/Extra/ToggleOn.mp3")
+                getgenv().RogueOn.Volume = 1
                 
                 getgenv().RogueOff = Instance.new("Sound", workspace)
-                sound.Name = "ToggleOff"
-                sound.SoundId = asset("Rogue Hub/Extra/ToggleOff.mp3")
-                sound.PlayOnRemove = false
-                sound.Volume = 0.5
+                getgenv().RogueOff.Name = "ToggleOff"
+                getgenv().RogueOff.SoundId = asset("Rogue Hub/Extra/ToggleOff.mp3")
+                getgenv().RogueOff.Volume = 1
             end
 			
 			function SectionInit:CreateToggle(Name, Default, Callback)
