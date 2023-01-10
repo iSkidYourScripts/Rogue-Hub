@@ -53,7 +53,7 @@ local Config = {
 
 local localPlr = game:GetService("Players").LocalPlayer
 local mouseDown = false
-local isLoaded = false
+getgenv().isLoaded = false
 local isKilling = false
 local isTyping = false
 local espColor
@@ -785,7 +785,7 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 })
 
 sound:Destroy()
-isLoaded = true
+getgenv().isLoaded = true
 
 if getgenv().settings.playerESP and isLoaded then
     for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
