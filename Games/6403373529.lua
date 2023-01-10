@@ -916,7 +916,7 @@ farmTog:AddToolTip(toolName)
 
 if game.PlaceId ~= 9431156611 then
     if game.PlaceId ~= 11520107397 then
-        local baller = gloveSec:CreateToggle("Baller Spammer", false, function(bool)
+        local baller = gloveSec:CreateToggle("Baller Spammer (PATCHED, DONT USE)", false, function(bool)
             getgenv().settings.ballerFarm = bool
             saveSettings()
             
