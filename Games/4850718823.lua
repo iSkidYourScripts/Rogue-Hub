@@ -394,7 +394,7 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 })
 
 sound:Destroy()
-
+getgenv().isLoaded = true
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
