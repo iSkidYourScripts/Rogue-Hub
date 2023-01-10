@@ -2,7 +2,7 @@ if getgenv().Rogue_AlreadyLoaded ~= nil then error("Rogue Hub was already found 
 
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 9431156611 or game.PlaceId == 11520107397 then else return end
 
-local isLoaded = false
+getgenv().isLoaded = false
 local isTping = false
 local isTyping = false
 
@@ -233,7 +233,7 @@ localPlr.CharacterAdded:Connect(function()
         end
     end
     
-    if getgenv().settings.infGold and isLoaded then
+    if getgenv().settings.infGold and getgenv().isLoaded then
         if localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.leaderstats.Glove.Value ~= "Golden" and not localPlr.Character:FindFirstChild("entered") then
             fireclickdetector(workspace.Lobby.Golden.ClickDetector)
         elseif localPlr.leaderstats.Slaps.Value <= 2500 and getgenv().settings.invis then
@@ -338,7 +338,7 @@ if game.PlaceId ~= 9431156611 and game.PlaceId ~= 11520107397 then
     -- local corn = playerSec:CreateToggle("Candy Corns Farm", false, function(bool)
     --     getgenv().settings.candyFarm = bool
         
-    --     while isLoaded and getgenv().settings.candyFarm and localPlr.Character ~= nil and localPlr.Character:FindFirstChild("HumanoidRootPart") ~= nil and not getgenv().slapFarm and not getgenv().settings.invis and wait() do
+    --     while getgenv().isLoaded and getgenv().settings.candyFarm and localPlr.Character ~= nil and localPlr.Character:FindFirstChild("HumanoidRootPart") ~= nil and not getgenv().slapFarm and not getgenv().settings.invis and wait() do
     --         for _, corn in pairs(workspace.CandyCorns:GetChildren()) do
     --             if getgenv().settings.candyFarm and corn:FindFirstChild("TouchInterest") ~= nil then
     --                 corn.CFrame = localPlr.Character.HumanoidRootPart.CFrame
@@ -511,14 +511,14 @@ if game.PlaceId ~= 9431156611 then
         local togInvis = playerSec:CreateToggle("Invisible (FE)", false, function(bool)
             getgenv().settings.invis = bool
             
-            if not getgenv().settings.invis and isLoaded and localPlr.leaderstats.Slaps.Value >= 666 and localPlr.Character:FindFirstChild("entered") then
+            if not getgenv().settings.invis and getgenv().isLoaded and localPlr.leaderstats.Slaps.Value >= 666 and localPlr.Character:FindFirstChild("entered") then
                 game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
                 
                 localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
                 return
             end
             
-            if getgenv().settings.invis and isLoaded and localPlr.Character:FindFirstChild("entered") then
+            if getgenv().settings.invis and getgenv().isLoaded and localPlr.Character:FindFirstChild("entered") then
                 localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
                 
                 repeat wait() until localPlr.Character and localPlr.Character:WaitForChild("HumanoidRootPart") and not localPlr.Character:FindFirstChild("entered")
@@ -561,13 +561,13 @@ if game.PlaceId ~= 9431156611 then
         local godded = playerSec:CreateToggle("Godmode (FE)", false, function(bool)
             getgenv().settings.infGold = bool
             
-            if getgenv().settings.infGold and isLoaded and localPlr.Character:FindFirstChild("entered") then
+            if getgenv().settings.infGold and getgenv().isLoaded and localPlr.Character:FindFirstChild("entered") then
                 localPlr.Character:WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
                 
                 repeat wait() until localPlr.Character and localPlr.Character:WaitForChild("HumanoidRootPart") and not localPlr.Character:FindFirstChild("entered")
             end
             
-            if getgenv().settings.infGold and isLoaded then
+            if getgenv().settings.infGold and getgenv().isLoaded then
                 if localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.leaderstats.Glove.Value ~= "Golden" and not localPlr.Character:FindFirstChild("entered") then
                     fireclickdetector(workspace.Lobby.Golden.ClickDetector)
                 elseif localPlr.leaderstats.Slaps.Value <= 2500 and getgenv().settings.invis then
@@ -1035,8 +1035,8 @@ local slapAuraTog = auraSec:CreateToggle("Enabled", false, function(bool)
         end)
     end
     
-    if game.PlaceId ~= 9431156611 and isLoaded and getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" then
-        while wait() and isLoaded do
+    if game.PlaceId ~= 9431156611 and getgenv().isLoaded and getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" then
+        while wait() and getgenv().isLoaded do
             if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" and not getgenv().slapFarm then
                 for _, target in ipairs(game:GetService("Players"):GetPlayers()) do
                     if getTool() and target.Character and target.Character:FindFirstChild("Humanoid") and localPlr.Character and localPlr.Character:FindFirstChild("Humanoid") and target.Character:FindFirstChild("rock") == nil and target.Character:FindFirstChild("Reversed") == nil and getgenv().settings.auraOption == "Blatant" and target:DistanceFromCharacter(localPlr.Character.HumanoidRootPart.Position) <= 20.1 and getTool().Name == "Default" then
@@ -1046,8 +1046,8 @@ local slapAuraTog = auraSec:CreateToggle("Enabled", false, function(bool)
                 end
             end
         end
-    elseif game.PlaceId == 9431156611 and isLoaded and getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" then
-        while wait() and isLoaded do
+    elseif game.PlaceId == 9431156611 and getgenv().isLoaded and getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" then
+        while wait() and getgenv().isLoaded do
             if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" and not getgenv().slapFarm then
                 if game.PlaceId == 9431156611 and not localPlr.Character:FindFirstChild("Glider") then
                     for _, target in ipairs(game:GetService("Players"):GetPlayers()) do
@@ -1639,7 +1639,7 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 })
 
 sound:Destroy()
-isLoaded = true
+getgenv().isLoaded = true
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
