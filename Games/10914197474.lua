@@ -209,6 +209,7 @@ end)
 
 -- Misc
 local miscSec = infoTab:CreateSection("Miscellaneous")
+local zoomBackup = localPlr.CameraMaxZoomDistance
 
 local server = miscSec:CreateButton("Serverhop", function()
     -- credits to: inf yield for there serverhop
@@ -226,6 +227,28 @@ local server = miscSec:CreateButton("Serverhop", function()
         error("No servers found")
     end
 end)
+
+server:AddToolTip("Joins a different server than the one you're currently in.")
+
+local camZoom = miscSec:CreateToggle("Infinite Zoom", false, function(bool)
+    if bool then
+        localPlr.CameraMaxZoomDistance = math.huge
+    else
+        localPlr.CameraMaxZoomDistance = zoomBackup
+    end
+end)
+
+camZoom:AddToolTip("Lets you infinitely change your camera's zoom.")
+
+local asset = getcustomasset or syn and getsynasset
+
+if asset and isfile and writefile then
+    local soundsToggled = miscSec:CreateToggle("Toggle Sounds", false, function(bool)
+        getgenv().settings.toggleSounds = bool
+    end)
+    
+    soundsToggled:AddToolTip("plays a sound when enabling or disabling a feature.")
+end
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rogue Hub Message",
