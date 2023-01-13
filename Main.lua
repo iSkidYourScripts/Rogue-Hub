@@ -1486,7 +1486,19 @@ if asset and isfile and writefile then
     
     soundsToggled:AddToolTip("plays a sound when enabling or disabling a feature.")
 end
+-- Place TP
+local placeSec = infoTab:CreateSection("Places")
+local brazilBtnLol = placeSec:CreateButton("Brazil Place", function()
+    game:GetService("TeleportService"):Teleport(7234087065)
+    game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(5), {CFrame = workspace.Lobby.brazil.portal.CFrame}):Play()
+    workspace.Lobby.brazil.portal:Destroy()
+end)
+brazilBtnLol:AddToolTip("Teleports you to the now removed Brazil Portal teleport place.")
 
+local testPlaceTP = placeSec:CreateButton("Testing Place", function()
+    game:GetService("TeleportService"):Teleport(9020359053)
+end)
+testPlaceTP:AddToolTip("Teleports you to the Slap Battles Testing Place")
 -- Debugger
 local debugSec = infoTab:CreateSection("Debug")
 local rogueSetUnloaded = debugSec:CreateButton("rogue.setunloaded(nil)", function()
