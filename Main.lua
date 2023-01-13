@@ -1402,6 +1402,32 @@ infoSec:CreateButton("Join us on discord!", function()
     end
 end)
 
+local funSec = infoTab:CreateSection("Cosmetic")
+funSec:CreateButton("Headless [FE]", function()
+    local player = game.Players.LocalPlayer
+    player.Character.Head:Destroy()
+end)
+funSec:CreateButton("No Legs [FE]", function()
+    local player = game.Players.LocalPlayer
+    player.Character["Left Leg"]:Destroy()
+    player.Character["Right Leg"]:Destroy()
+end)
+
+funSec:CreateButton("No Arms [FE]", function()
+    local player = game.Players.LocalPlayer
+    player.Character["Left Arm"]:Destroy()
+    player.Character["Right Arm"]:Destroy()
+end)
+
+funSec:CreateButton("No Hats [FE]", function()
+    local player = game.Players.LocalPlayer
+    for i, v in pairs(player.Character:GetChildren()) do
+        if v:IsA("Accessory") then
+            v:Destroy()
+        end
+    end
+end)
+
 -- Game Information
 
 local gameSec = infoTab:CreateSection("Game Information")
