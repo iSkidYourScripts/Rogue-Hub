@@ -159,7 +159,8 @@ getgenv().settings = {
     hipHeightKey = "NONE",
     hipHeightNum = 1,
     ballerFarm = false,
-    playerNametag = false
+    playerNametag = false,
+    autoKillsteal = false,
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -1296,6 +1297,13 @@ local tagAll = ksSec:CreateButton("Tag All", function()
 end)
 tagAll:AddToolTip("Tags all players with Killstreak. If they die, you get a kill anyway.")
 
+local autoKsSteal = ksSec:CreateToggle("Auto Kill Stealer", false, function(bool)
+    getgenv().settings.autoKillsteal = bool
+end)
+
+
+
+
 -- Credits
 
 local infoSec = infoTab:CreateSection("Credits")
@@ -1328,6 +1336,16 @@ infoSec:CreateButton("God of finding exploits: BluBambi#9867", function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Rogue Hub Note",
         Text = "Copied BluBambi's discord username and tag to your clipboard.",
+        Duration = 5
+    })
+end)
+
+infoSec:CreateButton("Rogue Hub Plus: StoneNicolas93#0001", function()
+    setclipboard("StoneNicolas93#0001")
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Rogue Hub Note",
+        Text = "Copied StoneNicolas93's discord username and tag to your clipboard.",
         Duration = 5
     })
 end)
@@ -1647,6 +1665,16 @@ game:GetService("RunService").RenderStepped:Connect(function()
         
         workspace.dedBarrier.Material = "Plastic"
         workspace.arenaVoid.Material = "Plastic"
+    end
+    if getgenv().settings.autoKillsteal then
+        for i, v in pairs(game:GetService("Players"):GetChildren()) do
+            local args = {
+                [1] = v.Character.HumanoidRootPart
+            }
+            
+            game:GetService("ReplicatedStorage").KSHit:FireServer(unpack(args))
+        end
+        wait(0.1)
     end
 end)
 
