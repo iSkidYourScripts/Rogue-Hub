@@ -1,4 +1,4 @@
-# _Rogue Hub Plus
+# _Rogue Hub Plus_
 An improved version of Rogue Hub, with a few extra features. <br>
 [Original Script](https://github.com/Kitzoon/Rogue-Hub) · [Discord Server](https://discord.gg/c4xWZ4G4bx) · [Script](https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/LOADSTRING.lua)
 <br>
