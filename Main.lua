@@ -11,7 +11,7 @@ local timeRagdolled = 0
 
 -- easter egg moment
 if syn then
-    print("DohmBoy is cool!")
+    print("DohmBoy is very not cool! jk")
 end
 
 if game.PlaceId == 9431156611 then
@@ -995,6 +995,7 @@ extendDrop:SetOption(getgenv().settings.extendOption or "Meat Stick")
 if game.PlaceId ~= 9431156611 then
     -- Auto Join
     local joinSec = mainTab:CreateSection("Joining")
+ 
     
     local autoEnabled = joinSec:CreateToggle("Auto Join", getgenv().settings.autoJoin or false, function(bool)
         getgenv().settings.autoJoin = bool
@@ -1277,6 +1278,23 @@ local uiRainbow = uiSec:CreateToggle("Rainbow UI", nil, function(bool)
         uiColor:UpdateColor(rainbow)
     end
 end)
+
+-- Killstreak
+
+local ksSec = mainTab:CreateSection("Killstreak")
+
+local tagAll = ksSec:CreateButton("Tag All", function()
+	for i, v in pairs(game.Players:GetChildren()) do
+		local args = {
+		    [1] = v.Character:FindFirstChild("Humanoid")
+		}
+
+		game:GetService("ReplicatedStorage").KSHit:FireServer(unpack(args))
+		print("Tagged: "..v.Name)
+	end
+
+end)
+tagAll:AddToolTip("Tags all players with Killstreak. If they die, you get a kill anyway.")
 
 -- Credits
 
@@ -1643,8 +1661,8 @@ getgenv().isLoaded = true
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Fact",
-    Text = "Rogue hub has over 3500+ lines of code!",
+    Title = "Rogue Hub Plus",
+    Text = "Welcome to Rogue Hub Plus, a project dedicated to keeping Rogue Hub and Slap Battles alive.",
     Duration = 10
 })
 
