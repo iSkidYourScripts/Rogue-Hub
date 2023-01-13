@@ -1522,7 +1522,6 @@ local rogueAlreadyLoadedUIDebug = debugSec:CreateButton("rogue._alreadyloaded(tr
 end)
 rogueAlreadyLoadedUIDebug:AddToolTip("Forces the Rogue Hub interface to be in a Loaded state.")
 debugSec:CreateButton("rogue.resetconfig(getgenv()=nil)", function()
-    getgenv().Rogue_AlreadyLoaded = true
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Debug Interface",
         Text = "rogue.resetconfig(getgenv()=nil) was executed successfully.",
@@ -1530,13 +1529,15 @@ debugSec:CreateButton("rogue.resetconfig(getgenv()=nil)", function()
     })
 end)
 
+
 local debugRemoveInterface = debugSec:CreateButton("rogue.removeinterface(destroy(),debris())", function()
-    getgenv().Rogue_AlreadyLoaded = true
+    getgenv().Rogue_AlreadyLoaded = nil
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Debug Interface",
         Text = "rogue.resetconfig(getgenv()=nil) was executed successfully.",
         Duration = 5
     })
+    window:Destroy()
 end)
 debugRemoveInterface:AddToolTip("Removes the Rogue Hub interface using Destroy() and Debris.")
 game:GetService("RunService").RenderStepped:Connect(function()
