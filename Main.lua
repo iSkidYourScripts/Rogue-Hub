@@ -6,7 +6,7 @@ local req = http_request or request or syn.request
 
 if not req then
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Error",
+        Title = "Unsupported Exploit",
         Text = "Your exploit is unsupported with Rogue Hub!",
         Duration = 5
     })
@@ -31,7 +31,7 @@ if not isfile("/Rogue Hub/Configs/Keybind.ROGUEHUB") then
 end
 
 local response = req({
-    Url = "https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Games/" .. game.PlaceId .. ".lua",
+    Url = "https://raw.githubusercontent.com/iSkidYourScripts/Rogue-Hub/tree/main/Games/" .. game.PlaceId .. ".lua",
     Method = "GET"
 })
 
@@ -67,7 +67,7 @@ if response.StatusCode ~= 404 then
     loadstring(response.Body)()
 else
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Error",
+        Title = "Unsupported Game",
         Text = "The game you are trying to play is not supported with Rogue Hub!",
         Duration = 5
     })
