@@ -1403,7 +1403,7 @@ infoSec:CreateButton("Join us on discord!", function()
 end)
 
 local funSec = infoTab:CreateSection("Cosmetic")
-funSec:CreateButton("Headless [FE]", function()
+local hdlessButton = funSec:CreateButton("Headless [FE]", function()
     local player = game.Players.LocalPlayer
     player.Character.Head:Destroy()
 end)
@@ -1427,6 +1427,9 @@ funSec:CreateButton("No Hats [FE]", function()
         end
     end
 end)
+hdlessButton:AddToolTip("Removes your head to make it seem like you have Headless Horseman. Works with FE.")
+
+
 
 -- Game Information
 
@@ -1484,6 +1487,46 @@ if asset and isfile and writefile then
     soundsToggled:AddToolTip("plays a sound when enabling or disabling a feature.")
 end
 
+-- Debugger
+local debugSec = infoTab:CreateSection("Debug")
+local rogueSetUnloaded = debugSec:CreateButton("rogue.setunloaded(nil)", function()
+    getgenv().Rogue_AlreadyLoaded = nil
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Debug Interface",
+        Text = "rogue.setunloaded(nil) was executed successfully.",
+        Duration = 5
+    })
+
+end)
+rogueSetUnloaded:AddToolTip("Forces the Rogue Hub interface to consider itself unloaded, without actually unloading.")
+
+local rogueAlreadyLoadedUIDebug = debugSec:CreateButton("rogue._alreadyloaded(true)", function()
+    getgenv().Rogue_AlreadyLoaded = true
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Debug Interface",
+        Text = "rogue.alreadyloaded(true) was executed successfully.",
+        Duration = 5
+    })
+end)
+rogueAlreadyLoadedUIDebug:AddToolTip("Forces the Rogue Hub interface to be in a Loaded state.")
+debugSec:CreateButton("rogue.resetconfig(getgenv()=nil)", function()
+    getgenv().Rogue_AlreadyLoaded = true
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Debug Interface",
+        Text = "rogue.resetconfig(getgenv()=nil) was executed successfully.",
+        Duration = 5
+    })
+end)
+
+local debugRemoveInterface = debugSec:CreateButton("rogue.removeinterface(destroy(),debris())", function()
+    getgenv().Rogue_AlreadyLoaded = true
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Debug Interface",
+        Text = "rogue.resetconfig(getgenv()=nil) was executed successfully.",
+        Duration = 5
+    })
+end)
+debugRemoveInterface:AddToolTip("Removes the Rogue Hub interface using Destroy() and Debris.")
 game:GetService("RunService").RenderStepped:Connect(function()
     if game.PlaceId ~= 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil or game.PlaceId == 9431156611 and localPlr ~= nil and getTool() ~= nil and localPlr.Character:FindFirstChild("inMatch").Value then
         if getgenv().settings.gloveExtend and getgenv().settings.extendOption == "Meat Stick" and getTool():FindFirstChild("Glove").Size ~= Vector3.new(0, 25, 2) then
