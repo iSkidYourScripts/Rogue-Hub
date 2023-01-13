@@ -9,7 +9,7 @@ Welcome to Rogue Hub Plus, Roblox's #1 script hub utility for Slap Battles! Due 
 # 💉 Script
 Paste the script into your executor to open Rogue Hub Plus (Slap Battles):
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/iSkidYourScripts/Rogue-Hub/main/Main.lua",true))()
 ```
 
 # 📷 Screenshots
