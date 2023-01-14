@@ -3,6 +3,7 @@ if getgenv().Rogue_AlreadyLoaded ~= nil then error("Rogue Hub was already found 
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 9431156611 or game.PlaceId == 11520107397 then else return end
 
 getgenv().isLoaded = false
+getgenv().lastTick = tick()
 local isTping = false
 local isTyping = false
 
@@ -114,7 +115,10 @@ local Config = {
 }
 
 local localPlr = game:GetService("Players").LocalPlayer
+
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
+
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Slap Battles")
 
@@ -237,11 +241,7 @@ localPlr.CharacterAdded:Connect(function()
         if localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.leaderstats.Glove.Value ~= "Golden" and not localPlr.Character:FindFirstChild("entered") then
             fireclickdetector(workspace.Lobby.Golden.ClickDetector)
         elseif localPlr.leaderstats.Slaps.Value <= 2500 and getgenv().settings.invis then
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "You don't have enough slaps for the golden glove! (2500 Slaps)",
-                Duration = 5
-            })
+            notifLib:Notification("You don't have enough slaps for the golden glove! (2500 Slaps)", 5)
             return
         end
         
@@ -249,11 +249,7 @@ localPlr.CharacterAdded:Connect(function()
         
         game:GetService("ReplicatedStorage").Goldify:FireServer(true, BrickColor.new(24))
         
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Godmode Activated",
-            Text = "You can now equip any other glove you want!",
-            Duration = 5
-        })
+        notifLib:Notification("Godmode activated, you can now equip any glove you want!", 5)
         
         repeat wait() until localPlr.Character:FindFirstChild("entered")
         
@@ -273,11 +269,11 @@ localPlr.CharacterAdded:Connect(function()
             if localPlr.Character:FindFirstChild("HumanoidRootPart") and localPlr.Character.Ragdolled.Value == true then
                 if localPlr.Character.HumanoidRootPart == nil or getgenv().settings.noRagdoll == false or getgenv().slapFarm or isTping then return end
                 
-                local oldCFrame = localPlr.Character.HumanoidRootPart.CFrame
-                
                 repeat task.wait()
-                    localPlr.Character.HumanoidRootPart.CFrame = oldCFrame
-                until localPlr.Character:FindFirstChild("HumanoidRootPart") == nil or localPlr.Character.Ragdolled.Value == false
+                    localPlr.Character.Head.Anchored = true
+                until localPlr.Character:FindFirstChild("Head") == nil or localPlr.Character.Ragdolled.Value == false
+                
+                localPlr.Character.Head.Anchored = false
             end
         end)
     end
@@ -290,7 +286,7 @@ localPlr.CharacterAdded:Connect(function()
     
     if getgenv().settings.noReaper and game.PlaceId ~= 11520107397 then
         localPlr.Character.ChildAdded:Connect(function(child)
-            if child.Name == "DeathMark" and child:IsA("StringValue") then
+            if child.Name == "DeathMark" and child:IsA("StringValue") and getgenv().settings.noReaper then
                 game:GetService("ReplicatedStorage").ReaperGone:FireServer(child)
                 game:GetService("Lighting"):WaitForChild("DeathMarkColorCorrection"):Destroy()
                 child:Destroy()
@@ -420,8 +416,6 @@ local noRagTog = playerSec:CreateToggle("Anti Ragdoll", getgenv().settings.noRag
             if localPlr.Character:FindFirstChild("HumanoidRootPart") and localPlr.Character.Ragdolled.Value == true then
                 if not localPlr.Character:FindFirstChild("HumanoidRootPart") or getgenv().settings.noRagdoll == false or getgenv().slapFarm or isTping then return end
                 
-                local oldCFrame = localPlr.Character.HumanoidRootPart.CFrame
-                
                 repeat task.wait()
                     localPlr.Character.Head.Anchored = true
                 until localPlr.Character:FindFirstChild("Head") == nil or localPlr.Character.Ragdolled.Value == false
@@ -450,7 +444,7 @@ if game.PlaceId ~= 9431156611 then
             
             if getgenv().settings.noReaper and localPlr.Character:FindFirstChildOfClass("Humanoid") then
                 for _, v in next, localPlr.Character:GetChildren() do
-                    if v.Name == "DeathMark" and v:IsA("StringValue") then
+                    if v.Name == "DeathMark" and v:IsA("StringValue") and getgenv().settings.noReaper then
                         game:GetService("ReplicatedStorage").ReaperGone:FireServer(v)
                         game:GetService("Lighting"):WaitForChild("DeathMarkColorCorrection"):Destroy()
                         v:Destroy()
@@ -458,7 +452,7 @@ if game.PlaceId ~= 9431156611 then
                 end
                 
                 localPlr.Character.ChildAdded:Connect(function(child)
-                    if child.Name == "DeathMark" and child:IsA("StringValue") then
+                    if child.Name == "DeathMark" and child:IsA("StringValue") and getgenv().settings.noReaper then
                         game:GetService("ReplicatedStorage").ReaperGone:FireServer(child)
                         game:GetService("Lighting"):WaitForChild("DeathMarkColorCorrection"):Destroy()
                         child:Destroy()
@@ -528,11 +522,7 @@ if game.PlaceId ~= 9431156611 then
                 if localPlr.leaderstats.Slaps.Value >= 666 and localPlr.leaderstats.Glove.Value ~= "Ghost" and not localPlr.Character:FindFirstChild("entered") then
                     fireclickdetector(workspace.Lobby.Ghost.ClickDetector)
                 elseif localPlr.leaderstats.Slaps.Value <= 666 and getgenv().settings.invis then
-                    game:GetService("StarterGui"):SetCore("SendNotification", {
-                        Title = "Rogue Hub Error",
-                        Text = "You don't have enough slaps for the ghost glove! (666 Slaps)",
-                        Duration = 5
-                    })
+                    notifLib:Notification("You don't have enough slaps for the ghost glove! (666 Slaps)", 5)
                     return
                 end
                 
@@ -540,11 +530,7 @@ if game.PlaceId ~= 9431156611 then
                 
                 game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
                 
-                game:GetService("StarterGui"):SetCore("SendNotification", {
-                    Title = "Invisible Activated",
-                    Text = "You can now equip any other glove you want!",
-                    Duration = 5
-                })
+                notifLib:Notification("Invisible activated, you can now equip any other glove you want!", 5)
             
                 repeat wait() until localPlr.Character:FindFirstChild("entered")
                 
@@ -571,11 +557,7 @@ if game.PlaceId ~= 9431156611 then
                 if localPlr.leaderstats.Slaps.Value >= 2500 and localPlr.leaderstats.Glove.Value ~= "Golden" and not localPlr.Character:FindFirstChild("entered") then
                     fireclickdetector(workspace.Lobby.Golden.ClickDetector)
                 elseif localPlr.leaderstats.Slaps.Value <= 2500 and getgenv().settings.invis then
-                    game:GetService("StarterGui"):SetCore("SendNotification", {
-                        Title = "Rogue Hub Error",
-                        Text = "You don't have enough slaps for the golden glove! (2500 Slaps)",
-                        Duration = 5
-                    })
+                    notifLib:Notification("You don't have enough slaps for the golden glove! (2500 Slaps)", 5)
                     return
                 end
                 
@@ -583,12 +565,8 @@ if game.PlaceId ~= 9431156611 then
                 
                 game:GetService("ReplicatedStorage").Goldify:FireServer(true, BrickColor.new(24))
                 
-                game:GetService("StarterGui"):SetCore("SendNotification", {
-                    Title = "Godmode Activated",
-                    Text = "You can now equip any other glove you want!",
-                    Duration = 5
-                })
-            
+                notifLib:Notification("Godmode activated, you can now equip any glove you want!", 5)
+                
                 repeat wait() until localPlr.Character:FindFirstChild("entered")
                 
                 for _,v in pairs(game.Lighting:GetChildren()) do
@@ -768,11 +746,7 @@ if game.PlaceId ~= 9431156611 then
         if game:GetService("Workspace").Arena.CubeOfDeathArea:FindFirstChild("the cube of death(i heard it kills)") ~= nil then
             game:GetService("Workspace").Arena.CubeOfDeathArea:FindFirstChild("the cube of death(i heard it kills)"):Destroy()
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "The cube of death is already deleted!",
-                Duration = 5
-            })
+            notifLib:Notification("The cube of death is already deleted!", 5)
         end
     end)
     
@@ -790,11 +764,7 @@ if game.PlaceId == 9431156611 then
             workspace.Lobby.Floor.CanCollide = true
             workspace.Lobby.FloorFraming.CanCollide = true
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "Phase only works when your in the lobby.",
-                Duration = 5
-            })
+            notifLib:Notification("Phase only works when your in the lobby.", 5)
         end
     end)
     
@@ -923,11 +893,7 @@ if game.PlaceId ~= 9431156611 then
             if getgenv().settings.ballerFarm and localPlr.leaderstats.Slaps.Value >= 20000 and localPlr.leaderstats.Glove.Value ~= "Baller" and not localPlr.Character:FindFirstChild("entered") then
                 fireclickdetector(workspace.Lobby.Baller.ClickDetector)
             elseif localPlr.leaderstats.Slaps.Value <= 20000 and getgenv().settings.ballerFarm then
-                game:GetService("StarterGui"):SetCore("SendNotification", {
-                    Title = "Rogue Hub Error",
-                    Text = "You don't have enough slaps for the baller glove! (20000 Slaps)",
-                    Duration = 5
-                })
+                notifLib:Notification("You don't have enough slaps for the baller glove! (20000 Slaps)", 5)
                 return
             end
         end)
@@ -1067,13 +1033,9 @@ local auraDrop = auraSec:CreateDropdown("Type", {"Legit","Blatant"}, function(op
 	getgenv().settings.auraOption = option
 	saveSettings()
 	
-	if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" then
+	if getgenv().settings.auraSlap and getgenv().settings.auraOption == "Blatant" and getgenv().isLoaded then
 	    if game.PlaceId ~= 9431156611 then
-    	    game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Note",
-                Text = "Blatant Type only works on the default glove, use legit for any glove type.",
-                Duration = 5
-            })
+            notifLib:Notification("Blatant Type only works on the default glove, use legit for any glove type.", 5)
         end
 	end
 end)
@@ -1100,11 +1062,7 @@ if game.PlaceId == 9431156611 then
                 end
             end
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "You aren't in the game yet! Or something else has happened.",
-                Duration = 5
-            })
+            notifLib:Notification("You aren't in the game yet! Or something else has happened.", 5)
         end
     end)
     
@@ -1119,11 +1077,7 @@ if game.PlaceId == 9431156611 then
                 end
             end
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "You aren't in the game yet! Or something else went wrong...",
-                Duration = 5
-            })
+            notifLib:Notification("You aren't in the game yet! Or something else went wrong...", 5)
         end
     end)
     
@@ -1136,11 +1090,7 @@ if game.PlaceId == 9431156611 then
                 end
             end
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Rogue Hub Error",
-                Text = "You aren't in the bus! Or something else went wrong...",
-                Duration = 5
-            })
+            notifLib:Notification("You aren't in the bus! Or something else went wrong...", 5)
         end
     end)
     
@@ -1287,51 +1237,19 @@ local req = http_request or request or syn.request
 infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kitzoon's discord username and tag to your clipboard.",
-        Duration = 5
-    })
-end)
-
-infoSec:CreateButton("Help with a lot: Kyron#6083", function()
-    setclipboard("Kyron#6083")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kyron's discord username and tag to your clipboard.",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kitzoon's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("God of finding exploits: BluBambi#9867", function()
     setclipboard("BluBambi#9867")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied BluBambi's discord username and tag to your clipboard.",
-        Duration = 5
-    })
+    notifLib:Notification("Copied BluBambi's discord username and tag to your clipboard.", 5)
 end)
 
-infoSec:CreateButton("Consider donating on PayPal!", function()
-    setclipboard("https://paypal.me/RogueHub")
+infoSec:CreateButton("Help with a lot: Kyron#6083", function()
+    setclipboard("Kyron#6083")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
-end)
-
-infoSec:CreateButton("Consider donating on Bitcoin!", function()
-    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kyron's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("Join us on discord!", function()
@@ -1357,12 +1275,8 @@ infoSec:CreateButton("Join us on discord!", function()
         })
     else
         setclipboard("https://discord.gg/c4xWZ4G4bx")
-    
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Note",
-            Text = "Copied our discord server to your clipboard.",
-            Duration = 5
-        })
+        
+        notifLib:Notification("Copied our discord server to your clipboard.", 5)
     end
 end)
 
@@ -1632,22 +1546,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Message",
-    Text = "Sucessfully Loaded!",
-    Duration = 5
-})
-
 sound:Destroy()
 getgenv().isLoaded = true
 
-task.wait(5)
-
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Fact",
-    Text = "Rogue hub has over 3500+ lines of code!",
-    Duration = 10
-})
+notifLib:Notification("Rogue Hub took " .. math.floor(getgenv().lastTick - tick()) .. " seconds to load!", 5)
 
 while wait() do
     if game.PlaceId ~= 9431156611 then
