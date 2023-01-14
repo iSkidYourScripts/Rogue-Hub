@@ -8,6 +8,8 @@ sound.SoundId = "rbxassetid://1548304764"
 sound.PlayOnRemove = true
 sound.Volume = 0.5
 
+getgenv().lastTick = tick()
+
 local ourColor = Color3.fromRGB(153, 148, 148)
 
 function CheckConfigFile()
@@ -68,7 +70,10 @@ local function saveSettings()
 end
 
 local localPlr = game:GetService("Players").LocalPlayer
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
+
 local Window = Library:CreateWindow(Config, game:GetService("CoreGui"))
 
 local mainTab = Window:CreateTab("Mega Noob Simulator")
@@ -289,41 +294,13 @@ local req = http_request or request or syn.request
 infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kitzoon's discord username and tag to your clipboard.",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kitzoon's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     setclipboard("Kyron#6083")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kyron's discord username and tag to your clipboard.",
-        Duration = 5
-    })
-end)
 
-infoSec:CreateButton("Consider donating on PayPal!", function()
-    setclipboard("https://paypal.me/RogueHub")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
-end)
-
-infoSec:CreateButton("Consider donating on Bitcoin!", function()
-    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kyron's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("Join us on discord!", function()
@@ -349,12 +326,8 @@ infoSec:CreateButton("Join us on discord!", function()
         })
     else
         setclipboard("https://discord.gg/c4xWZ4G4bx")
-    
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Note",
-            Text = "Copied our discord server to your clipboard.",
-            Duration = 5
-        })
+        
+        notifLib:Notification("Copied our discord server to your clipboard.", 5)
     end
 end)
 
@@ -472,18 +445,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Message",
-    Text = "Sucessfully Loaded!",
-    Duration = 5
-})
+notifLib:Notification("Rogue Hub took " .. math.floor(getgenv().lastTick - tick()) .. " seconds to load!", 5)
 
 sound:Destroy()
 getgenv().isLoaded = true
-task.wait(5)
-
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Fact",
-    Text = "Rogue hub has over 3500+ lines of code!",
-    Duration = 10
-})
