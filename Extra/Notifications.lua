@@ -1,3 +1,5 @@
+-- notification gui made by StoneNicolas93#0001
+
 local notifLib = {}
 
 function notifLib:Notification(notifText, duration)
