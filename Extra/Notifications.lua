@@ -1,6 +1,6 @@
 local notifLib = {}
 
-function notifLib:Notification(notifText, duration)
+local function Notification(notifText, duration)
     if game.CoreGui:FindFirstChild("RogueNotif") then
         repeat wait() until not game.CoreGui:FindFirstChild("RogueNotif")
     end
