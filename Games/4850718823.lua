@@ -8,6 +8,8 @@ sound.SoundId = "rbxassetid://1548304764"
 sound.PlayOnRemove = true
 sound.Volume = 0.5
 
+getgenv().lastTick = tick()
+
 local ourColor = Color3.fromRGB(201,144,150)
 
 function CheckConfigFile()
@@ -29,6 +31,9 @@ getgenv().settings = {
 }
 
 local localPlr = game:GetService("Players").LocalPlayer
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
 
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Skate Park")
@@ -159,11 +164,7 @@ teleSec:CreateButton("Warehouse", function()
     if not hasSkateboard() then
         localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(-1022.65997, 147.16539, 3028.60498, -0.875416875, -4.63443222e-08, 0.483368725, -8.29182554e-08, 1, -5.42933734e-08, -0.483368725, -8.7609429e-08, -0.875416875)
     else
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Error",
-            Text = "For teleports to work you need to get off your skateboard.",
-            Duration = 5
-        })
+        notifLib:Notification("For teleports to work you need to get off your skateboard.", 5)
     end
 end)
 
@@ -171,11 +172,7 @@ teleSec:CreateButton("Indoor Skatepark", function()
     if not hasSkateboard() then
         localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(-87.9039154, 130.067047, 3113.10254, -0.965112507, 2.99084384e-08, 0.261835486, 3.49577789e-08, 1, 1.46265586e-08, -0.261835486, 2.3269461e-08, -0.965112507)
     else
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Error",
-            Text = "For teleports to work you need to get off your skateboard.",
-            Duration = 5
-        })
+        notifLib:Notification("For teleports to work you need to get off your skateboard.", 5)
     end
 end)
 
@@ -183,11 +180,7 @@ teleSec:CreateButton("Loop", function()
     if not hasSkateboard() then
         localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(463.830078, 203.362656, 2913.56567, -0.105732545, -1.14461338e-08, 0.9943946, 8.2595335e-08, 1, 2.0292898e-08, -0.9943946, 8.42779713e-08, -0.105732545)
     else
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Error",
-            Text = "For teleports to work you need to get off your skateboard.",
-            Duration = 5
-        })
+        notifLib:Notification("For teleports to work you need to get off your skateboard.", 5)
     end
 end)
 
@@ -195,11 +188,7 @@ teleSec:CreateButton("Mega Ramp", function()
     if not hasSkateboard() then
         localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(-1035.90771, 318.391998, 1663.12561, -0.999331474, 2.4673513e-08, 0.0365597308, 2.1454829e-08, 1, -8.84313565e-08, -0.0365597308, -8.7587857e-08, -0.999331474)
     else
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Error",
-            Text = "For teleports to work you need to get off your skateboard.",
-            Duration = 5
-        })
+        notifLib:Notification("For teleports to work you need to get off your skateboard.", 5)
     end
 end)
 
@@ -207,11 +196,7 @@ teleSec:CreateButton("Shops", function()
     if not hasSkateboard() then
         localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(-30.3401909, 130.067047, 2032.8822, 0.999581039, 7.79592995e-08, 0.0289443526, -7.90784966e-08, 1, 3.75223799e-08, -0.0289443526, -3.9795534e-08, 0.999581039)
     else
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Error",
-            Text = "For teleports to work you need to get off your skateboard.",
-            Duration = 5
-        })
+        notifLib:Notification("For teleports to work you need to get off your skateboard.", 5)
     end
 end)
 
@@ -272,41 +257,13 @@ local req = http_request or request or syn.request
 infoSec:CreateButton("Founder of Rogue Hub: Kitzoon#7750", function()
     setclipboard("Kitzoon#7750")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kitzoon's discord username and tag to your clipboard.",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kitzoon's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("Help with a lot: Kyron#6083", function()
     setclipboard("Kyron#6083")
     
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied Kyron's discord username and tag to your clipboard.",
-        Duration = 5
-    })
-end)
-
-infoSec:CreateButton("Consider donating on PayPal!", function()
-    setclipboard("https://paypal.me/RogueHub")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our PayPal donate page to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
-end)
-
-infoSec:CreateButton("Consider donating on Bitcoin!", function()
-    setclipboard("bc1qh8axzk8udu7apye7l384s5m6rt4d24rdwgkkcz")
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Rogue Hub Note",
-        Text = "Copied our Bitcoin address to your clipboard, donate any amount to it!",
-        Duration = 5
-    })
+    notifLib:Notification("Copied Kyron's discord username and tag to your clipboard.", 5)
 end)
 
 infoSec:CreateButton("Join us on discord!", function()
@@ -332,12 +289,8 @@ infoSec:CreateButton("Join us on discord!", function()
         })
     else
         setclipboard("https://discord.gg/c4xWZ4G4bx")
-    
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Rogue Hub Note",
-            Text = "Copied our discord server to your clipboard.",
-            Duration = 5
-        })
+        
+        notifLib:Notification("Copied Kyron's discord username and tag to your clipboard.", 5)
     end
 end)
 -- Misc
@@ -409,18 +362,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Message",
-    Text = "Sucessfully Loaded!",
-    Duration = 5
-})
-
 sound:Destroy()
 getgenv().isLoaded = true
-task.wait(5)
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Rogue Hub Fact",
-    Text = "Rogue hub has over 3500+ lines of code!",
-    Duration = 10
-})
+notifLib:Notification("Rogue Hub took " .. math.floor(getgenv().lastTick - tick()) .. " seconds to load!", 5)
