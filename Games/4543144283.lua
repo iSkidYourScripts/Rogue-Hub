@@ -70,10 +70,14 @@ local function saveSettings()
 end
 
 local localPlr = game:GetService("Players").LocalPlayer
+<<<<<<< Updated upstream
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
 local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
 
+=======
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/BracketV3.lua"))()
+>>>>>>> Stashed changes
 local Window = Library:CreateWindow(Config, game:GetService("CoreGui"))
 
 local mainTab = Window:CreateTab("Mega Noob Simulator")

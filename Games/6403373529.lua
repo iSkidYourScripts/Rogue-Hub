@@ -116,8 +116,9 @@ local Config = {
 
 local localPlr = game:GetService("Players").LocalPlayer
 
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
-local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/BracketV3.lua"))()
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/Notifications.lua"))()
+local ESP = loadstring(game:HttpGet("https://kiriot22.com/releases/ESP.lua"))()
 
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Slap Battles")
@@ -163,7 +164,13 @@ getgenv().settings = {
     hipHeightKey = "NONE",
     hipHeightNum = 1,
     ballerFarm = false,
-    playerNametag = false
+    playerNametag = false,
+    ESPEnabled = false,
+    Tracers = false,
+    Boxes = false,
+    Names = false,
+    Colour = Color3.fromRGB(255, 255, 255),
+    FaceCamera = false,
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -322,6 +329,7 @@ localPlr.CharacterAdded:Connect(function()
         end
     end
 end)
+
 
 -- Player
 
@@ -770,6 +778,41 @@ if game.PlaceId == 9431156611 then
     
     butPhase:AddToolTip("Phases you through the lobby (only works when the game hasn't started)")
 end
+
+-- Esp 
+
+local espSec = mainTab:CreateSection("ESP")
+
+espSec:CreateToggle("Enabled", nil, function(State)
+	getgenv().settings.Enabled = State
+    ESP:Toggle(State)
+end)
+
+espSec:CreateToggle("Tracers", nil, function(State)
+	getgenv().settings.Tracers = State
+    ESP.Tracers = State
+end)
+
+espSec:CreateToggle("Boxes", nil, function(State)
+	getgenv().settings.Boxes = State
+    ESP.Boxes = State
+end)
+
+espSec:CreateToggle("Names", nil, function(State)
+	getgenv().settings.Names = State
+    ESP.Names = State
+end)
+
+espSec:CreateToggle("Face Camera", nil, function(State)
+	getgenv().settings.Boxes = State
+    ESP.FaceCamera = State
+end)
+
+espSec:CreateColorpicker("ESP Colour", function(Color)
+	getgenv().settings.Colour = Color
+    ESP.Color = Color3.fromRGB(Color)
+end)
+
 
 -- Glove
 
