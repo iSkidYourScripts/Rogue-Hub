@@ -349,7 +349,7 @@ function Library:CreateWindow(Config, Parent)
                 writefile("Rogue Hub/Extra/ToggleOff.mp3", game:HttpGet("https://github.com/Kitzoon/Rogue-Hub/blob/main/Extra/ToggleOff.mp3?raw=true"))
             end
             
-            if asset and isfile and writefile and isfile("Rogue Hub/Extra/ToggleOn.mp3") and isfile("Rogue Hub/Extra/ToggleOff.mp3") then
+            if asset and isfile and writefile and isfile("Rogue Hub/Extra/ToggleOn.mp3") and isfile("Rogue Hub/Extra/ToggleOff.mp3") and not workspace:FindFirstChild("ToggleOn") and not workspace:FindFirstChild("ToggleOff") then
                 getgenv().RogueOn = Instance.new("Sound", workspace)
                 getgenv().RogueOn.Name = "ToggleOn"
                 getgenv().RogueOn.SoundId = asset("Rogue Hub/Extra/ToggleOn.mp3")
