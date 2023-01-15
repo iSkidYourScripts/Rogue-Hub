@@ -70,14 +70,10 @@ local function saveSettings()
 end
 
 local localPlr = game:GetService("Players").LocalPlayer
-<<<<<<< Updated upstream
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
-local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/Notifications.lua"))()
-
-=======
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/BracketV3.lua"))()
->>>>>>> Stashed changes
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/Notifications.lua"))()
+
 local Window = Library:CreateWindow(Config, game:GetService("CoreGui"))
 
 local mainTab = Window:CreateTab("Mega Noob Simulator")
@@ -449,7 +445,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
-notifLib:Notification("Rogue Hub took " .. math.floor(getgenv().lastTick - tick()) .. " seconds to load!", 5)
-
+notifLib:Notification("Rogue Hub took " .. math.floor(tick() - getgenv().lastTick) .. " seconds to load!", 5)
 sound:Destroy()
 getgenv().isLoaded = true

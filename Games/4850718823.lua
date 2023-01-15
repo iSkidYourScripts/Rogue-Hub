@@ -365,4 +365,4 @@ end)
 sound:Destroy()
 getgenv().isLoaded = true
 
-notifLib:Notification("Rogue Hub took " .. math.floor(getgenv().lastTick - tick()) .. " seconds to load!", 5)
+notifLib:Notification("Rogue Hub took " .. math.floor(tick() - getgenv().lastTick) .. " seconds to load!", 5)
