@@ -182,6 +182,7 @@ local function esp(object, text, color)
 end
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/BracketV3.lua"))()
+local notifLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Libs/Notifications.lua"))()
 
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("No-Scope Arcade")
@@ -755,6 +756,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
                         if mag < distance and mag < getgenv().settings.fovRadius then
                             distance = mag
                             closestPlayer = player.Character
+                            
                             game:GetService("Workspace").CurrentCamera.CFrame = CFrame.new(game:GetService("Workspace").CurrentCamera.CFrame.Position, closestPlayer[getgenv().settings.aimbotPart].Position)
                         end
                     end
