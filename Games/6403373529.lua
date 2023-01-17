@@ -171,6 +171,7 @@ getgenv().settings = {
     Names = false,
     Colour = Color3.fromRGB(255, 255, 255),
     FaceCamera = false,
+    autoGoldenSlapple = false,
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -366,6 +367,13 @@ if game.PlaceId ~= 9431156611 and game.PlaceId ~= 11520107397 then
     end)
         
     slapple:AddToolTip("Auto farm's slapple gloves for you. (gets you free slaps)")
+
+    local gSlapple = playerSec:CreateToggle("Auto Golden Slapple", getgenv().settings.autoGoldenSlapple or false, function(bool)
+        getgenv().settings.autoGoldenSlapple = bool
+        saveSettings()
+    end)
+        
+    gSlapple:AddToolTip("Auto picks up the Golden Slapple whenever it spawns.")
 end
 
 playerSec:CreateToggle("Autoclicker", getgenv().settings.autoClicker or false, function(bool)
@@ -1586,6 +1594,14 @@ game:GetService("RunService").RenderStepped:Connect(function()
         
         workspace.dedBarrier.Material = "Plastic"
         workspace.arenaVoid.Material = "Plastic"
+    end
+    if getgenv().autoGoldenSlapple then -- AutoSlapple (StoneNicolas93#0001)
+        if game:GetService("Workspace").Arena.island5.Slapples.GoldenSlapple.Glove.Transparency == 0 then -- Detects if it spawns
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Arena.island5.Slapples.GoldenSlapple.Glove.CFrame -- Teleports to the Golden Slapple's CFrame
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true -- Anchors the character, just in case there is lag and it didn't pick up the slapple.
+            task.wait(1.5) -- Waits, in case the slapple wasn't picked up.
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored -- Unanchors the character, so it can keep playing.
+        end
     end
 end)
 
