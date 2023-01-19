@@ -8,6 +8,8 @@ local Health = Instance.new("TextLabel")
 local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
 local PVPStatus = Instance.new("TextLabel")
 local UITextSizeConstraint_3 = Instance.new("UITextSizeConstraint")
+local WinsLosses = Instance.new("TextLabel")
+local UITextSizeConstraint_4 = Instance.new("UITextSizeConstraint")
 local Dropshadow = Instance.new("Frame")
 local UICorner_2 = Instance.new("UICorner")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -85,6 +87,22 @@ PVPStatus.TextWrapped = true
 
 UITextSizeConstraint_3.Parent = PVPStatus
 UITextSizeConstraint_3.MaxTextSize = 20
+
+WinsLosses.Name = "WinsLosses"
+WinsLosses.Parent = MainFrame
+WinsLosses.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+WinsLosses.BackgroundTransparency = 1.000
+WinsLosses.Position = UDim2.new(0.279220849, 0, 0.633663774, 0)
+WinsLosses.Size = UDim2.new(0.611999989, 0, 0.25, 0)
+WinsLosses.Font = Enum.Font.Nunito
+WinsLosses.Text = "10 - 28"
+WinsLosses.TextColor3 = Color3.fromRGB(255, 255, 255)
+WinsLosses.TextScaled = true
+WinsLosses.TextSize = 20.000
+WinsLosses.TextWrapped = true
+
+UITextSizeConstraint_4.Parent = WinsLosses
+UITextSizeConstraint_4.MaxTextSize = 20
 
 Dropshadow.Name = "Dropshadow"
 Dropshadow.Parent = TargetHUD
