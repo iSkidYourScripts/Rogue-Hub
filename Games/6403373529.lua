@@ -1236,6 +1236,40 @@ if game.PlaceId ~= 9431156611 then
     NoCamEffects:AddToolTip("Removes all of the games built in camera FOV and camera shake effects.")
 end
 
+-- Trolling
+
+local trollingTab = mainTab:CreateSection("Trolling")
+local killRandom = trollingTab:CreateButton("Kill Random", function()
+    local args = {
+        [1] = game:GetService("Players").LocalPlayer.Character,
+        [2] = true
+        }
+    
+    game:GetService("ReplicatedStorage").HumanoidDied:FireServer(unpack(args))
+    wait(4)
+    fireclickdetector(game:GetService("Workspace").Lobby.Swapper.ClickDetector)
+    if not localPlr.Character:FindFirstChild("entered") and localPlr.Character:FindFirstChild("HumanoidRootPart") then
+        repeat wait(0.5)
+            firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 0)
+            firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 1)
+        until localPlr.Character:FindFirstChild("entered") ~= nil
+    end
+    wait(.2) -- prevent AC kick
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-54.044548, -11.748374, 120.821579, 0.677197754, -0.0775360242, 0.731704473, -2.24451551e-08, 0.99443239, 0.105376355, -0.735801101, -0.0713606477, 0.673427343)
+    task.wait(.2)
+    game:GetService("ReplicatedStorage").SLOC:FireServer()
+
+    local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = true
+    }
+
+    game:GetService("ReplicatedStorage").HumanoidDied:FireServer(unpack(args))
+
+end)
+
+killRandom:AddToolTip("Kills a random player. (420+ Slaps Required)")
+
 -- Info
 
 local infoTab = window:CreateTab("Extra")
