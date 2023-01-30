@@ -1,41 +1,65 @@
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local ImageLabel = Instance.new("ImageLabel")
-local TextLabel = Instance.new("TextLabel")
+local TargetHUD = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Username = Instance.new("TextLabel")
 local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+local PlayerThumbnail = Instance.new("ImageLabel")
+local Dropshadow = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "TargetHUD"
+TargetHUD.Name = "TargetHUD"
+TargetHUD.Parent = game.CoreGui
+TargetHUD.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.BackgroundTransparency = 1.000
-Frame.Position = UDim2.new(0.429528087, 0, 0.748699009, 0)
-Frame.Size = UDim2.new(0.140771642, 0, 0.0927643776, 0)
-Frame.Visible = false
+if syn then
+    syn.protect_gui(TargetHUD)
+end
 
-ImageLabel.Parent = Frame
-ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ImageLabel.BackgroundTransparency = 1.000
-ImageLabel.Position = UDim2.new(-0.000536883308, 0, -0.00139160152, 0)
-ImageLabel.Size = UDim2.new(0.277777791, 0, 0.75999999, 0)
-ImageLabel.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = TargetHUD
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+MainFrame.BorderColor3 = Color3.fromRGB(39, 61, 77)
+MainFrame.Position = UDim2.new(0.417445481, 0, 0.721518934, 0)
+MainFrame.Size = UDim2.new(0.164330199, 0, 0.0949367583, 0)
+MainFrame.ZIndex = 5
+MainFrame.Visible = false
 
-TextLabel.Parent = Frame
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.Position = UDim2.new(0.366666883, 0, 0, 0)
-TextLabel.Size = UDim2.new(0.633333325, 0, 0.5, 0)
-TextLabel.Font = Enum.Font.Unknown
-TextLabel.Text = "Username"
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.TextScaled = true
-TextLabel.TextSize = 25.000
-TextLabel.TextWrapped = true
+UICorner.Parent = MainFrame
 
-UITextSizeConstraint.Parent = TextLabel
-UITextSizeConstraint.MaxTextSize = 25
+Username.Name = "Username"
+Username.Parent = MainFrame
+Username.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Username.BackgroundTransparency = 1.000
+Username.Size = UDim2.new(1, 0, 0.316831678, 0)
+Username.Font = Enum.Font.Nunito
+Username.Text = "Username"
+Username.TextColor3 = Color3.fromRGB(255, 255, 255)
+Username.TextScaled = true
+Username.TextSize = 20.000
+Username.TextWrapped = true
 
-UIAspectRatioConstraint.Parent = ScreenGui
-UIAspectRatioConstraint.AspectRatio = 1.779
+UITextSizeConstraint.Parent = Username
+UITextSizeConstraint.MaxTextSize = 20
+
+PlayerThumbnail.Name = "PlayerThumbnail"
+PlayerThumbnail.Parent = MainFrame
+PlayerThumbnail.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+PlayerThumbnail.BackgroundTransparency = 1.000
+PlayerThumbnail.Position = UDim2.new(0.0519480519, 0, 0.158415854, 0)
+PlayerThumbnail.Size = UDim2.new(0.227272734, 0, 0.683168292, 0)
+PlayerThumbnail.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+Dropshadow.Name = "Dropshadow"
+Dropshadow.Parent = TargetHUD
+Dropshadow.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Dropshadow.BackgroundTransparency = 0.500
+Dropshadow.BorderColor3 = Color3.fromRGB(39, 61, 77)
+Dropshadow.Position = UDim2.new(0.417445421, 0, 0.721518934, 0)
+Dropshadow.Size = UDim2.new(0.164330259, 0, 0.10598138, 0)
+Dropshadow.Visible = false
+
+UICorner_2.Parent = Dropshadow
+
+UIAspectRatioConstraint.Parent = TargetHUD
+UIAspectRatioConstraint.AspectRatio = 2.032
