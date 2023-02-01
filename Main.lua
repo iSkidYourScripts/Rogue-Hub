@@ -58,7 +58,7 @@ if response.StatusCode ~= 404 then
     
     local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
 
-    if teleportFunc and game.PlaceId ~= 6403373529 then
+    if teleportFunc then
         teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
     end
 
