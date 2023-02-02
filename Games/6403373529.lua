@@ -580,7 +580,7 @@ if game.PlaceId ~= 9431156611 then
                 
                 game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
                 
-                notifLib:Notification("Invisible activated, you can now equip any other glove you want!", 5)
+                notifLib:Notification("Invisible activated!", 5)
             
                 repeat wait() until localPlr.Character:FindFirstChild("entered")
                 
@@ -615,7 +615,7 @@ if game.PlaceId ~= 9431156611 then
                 
                 game:GetService("ReplicatedStorage").Goldify:FireServer(true, BrickColor.new(24))
                 
-                notifLib:Notification("Godmode activated, you can now equip any glove you want!", 5)
+                notifLib:Notification("Godmode activated!", 5)
                 
                 repeat wait() until localPlr.Character:FindFirstChild("entered")
                 
@@ -732,7 +732,7 @@ local spinTog = playerSec:CreateToggle("Spin", getgenv().settings.spin or false,
     saveSettings()
 end)
 
-spinTog:AddToolTip("Makes your player spin around, looks derpy :D")
+spinTog:AddToolTip("bayblade, bayblade, lalaallalalalala")
 
 playerSec:CreateSlider("Spin Speed", 10,100,getgenv().settings.spinSpeed or 10,true, function(value)
 	getgenv().settings.spinSpeed = value
@@ -878,6 +878,22 @@ if game.PlaceId == 9431156611 then
     end)
     
     feGod:AddToolTip("Makes you immune to anyone's slaps, this works with everything EXCEPT acid and lava.")
+    
+    -- Godmode Users
+    
+    for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+        if localPlr ~= v and v.Character then
+            v.Character.ChildRemoved:Connect(function(child)
+                if child.Name == "Vulnerable" then
+                    if not getgenv().goddedSec then
+                        getgenv().goddedSec = mainTab:CreateSection("Godmode Users")
+                    end
+                    
+                    getgenv().goddedSec:CreateLabel(v.Name)
+                end
+            end)
+        end
+    end
 end
 
 -- Player ESP
@@ -945,22 +961,24 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
         if game.PlaceId ~= 9431156611 then
             for _, target in next, game:GetService("Players"):GetPlayers() do
                 if target ~= localPlr and target.Character ~= nil and target.Character:FindFirstChild("entered") ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil and target.Character:FindFirstChild("FrozenHumanoid") == nil and target.Character:FindFirstChild("Ragdolled").Value == false and target.Character:FindFirstChild("Reversed") == nil and target.Character:FindFirstChild("Right Arm") and target.Character:FindFirstChild("Error") == nil and target.Character:FindFirstChild("Orbit") == nil and target.Character:FindFirstChild("Spectator") == nil and target.Backpack:FindFirstChild("Spectator") == nil and getgenv().slapFarm then                        
+                    localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
+                    
                     pcall(function()
                         if getTool() ~= nil and getTool().Name == "Default" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,8,0)
+                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
                             task.wait(0.25)
                             game:GetService("ReplicatedStorage").b:FireServer(target.Character.HumanoidRootPart)
                         elseif getTool() ~= nil and getTool().Name == "Bull" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,8,0)
+                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
                             task.wait(0.25)
                             game:GetService("ReplicatedStorage").BullHit:FireServer(target.Character.HumanoidRootPart)
                         elseif getTool() ~= nil and getTool().Name == "Ghost" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,8,0)
+                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
                             task.wait(0.25)
                             game:GetService("ReplicatedStorage").GhostHit:FireServer(target.Character.HumanoidRootPart)
                         elseif getTool() ~= nil and getTool().Name == "Killstreak" and getgenv().slapFarm then
                             repeat task.wait(0.25)
-                                localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,8,0)
+                                localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
                                 task.wait(0.25)
                                 game:GetService("ReplicatedStorage").KSHit:FireServer(target.Character.HumanoidRootPart)
                             until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
@@ -971,6 +989,8 @@ local farmTog = gloveSec:CreateToggle(name, false, function(bool)
                             until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
                         end
                     end)
+                    
+                    localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running)
                     
                     if getgenv().settings.autoToxic then
                         game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(target.Name .. " " .. getQuote(), "All")    
@@ -1301,9 +1321,19 @@ auraDrop:SetOption(getgenv().settings.auraOption or "Blatant")
 if game.PlaceId == 9431156611 then
     local itemSec = mainTab:CreateSection("Items")
     
-    local item = itemSec:CreateToggle("Auto Get All Items", getgenv().settings.autoItems or false, function(bool)
+    local item = itemSec:CreateToggle("Auto Get All Items", false, function(bool)
         getgenv().settings.autoItems = bool
-        saveSettings()
+        
+        while wait() and getgenv().isLoaded do
+            if localPlr.Character and localPlr.Character:FindFirstChild("Humanoid") and getgenv().settings.autoItems and game.PlaceId == 9431156611 then
+                for _, v in pairs(workspace:GetChildren()) do
+                    if v:IsA("Tool") and v.Handle:FindFirstChild("TouchInterest") ~= nil and localPlr.Character:FindFirstChild("inMatch").Value then
+                        localPlr.Character.Humanoid:EquipTool(v)
+                        localPlr.Character.Humanoid:UnequipTools()
+                    end
+                end
+            end
+        end
     end)
     
     item:AddToolTip("Automatically finds items in the map and grabs them for you.")
@@ -1704,7 +1734,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
             getTool().Glove.Size = Vector3.new(3, 3, 3.7)
         elseif getgenv().settings.gloveExtend == false then
             getTool().Glove.Transparency = 0
-            getTool().Glove.Size = Vector3.new(2.5, 2.5, 1.7)
+            getTool().Glove.Size = Vector3.new(2.55232, 2.88637, 1.06914)
         end
         
         if getgenv().settings.hipHeight and localPlr.Character.Humanoid.HipHeight ~= getgenv().settings.hipHeightNum then
@@ -1912,15 +1942,6 @@ getgenv().isLoaded = true
 notifLib:Notification("Rogue Hub took " .. math.floor(tick() - getgenv().lastTick) .. " seconds to load!", 5)
 
 while wait() do
-    if localPlr.Character and localPlr.Character:FindFirstChild("Humanoid") and getgenv().settings.autoItems and game.PlaceId == 9431156611 then
-        for _, v in pairs(workspace:GetChildren()) do
-            if v:IsA("Tool") and v.Handle:FindFirstChild("TouchInterest") ~= nil and localPlr.Character:FindFirstChild("inMatch").Value then
-                localPlr.Character.Humanoid:EquipTool(v)
-                localPlr.Character.Humanoid:UnequipTools()
-            end
-        end
-    end
-    
     if game.PlaceId ~= 9431156611 then
         slapLabel:UpdateText("Players Slapped: " .. timeSlapped)
     end
