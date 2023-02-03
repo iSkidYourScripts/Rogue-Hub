@@ -183,7 +183,13 @@ getgenv().settings = {
     botDistance = false,
     botDistanceLimit = 5,
     femBoy = false,
-    busJump = false
+    busJump = false,
+	farmDelay = 0.35,
+	autoGoldenSlapple = false,
+	hideSlapCount = false,
+	hideInviteFriends = false,
+	hideOptionsMenu = false,
+	thanosEarrape = false,
 }
 
 if makefolder and isfolder and not isfolder("Rogue Hub") then
@@ -399,19 +405,7 @@ if game.PlaceId ~= 9431156611 and game.PlaceId ~= 11520107397 then
     
     -- corn:AddToolTip("Farm's candy corns for you. (from the latest halloween event)")
     
-    local errorlol = playerSec:CreateToggle("Error Sound Earrape (FE)", getgenv().settings.errorSound or false, function(bool)
-        getgenv().settings.errorSound = bool
-        saveSettings()
-    end)
     
-    errorlol:AddToolTip("spams the error sound, practically ear rape for everyone in your server.")
-    
-    local slapple = playerSec:CreateToggle("Slapples Glove Farm", getgenv().settings.slappleFarm or false, function(bool)
-        getgenv().settings.slappleFarm = bool
-        saveSettings()
-    end)
-        
-    slapple:AddToolTip("Auto farm's slapple gloves for you. (gets you free slaps)")
 end
 
 playerSec:CreateToggle("Autoclicker", getgenv().settings.autoClicker or false, function(bool)
@@ -796,30 +790,7 @@ playerSec:CreateSlider("Jump Power", 50,300,getgenv().settings.jumpPower or 50,t
 end)
 
 if game.PlaceId ~= 9431156611 then
-    local isEnabled = false
-    
-    local plateBadge = playerSec:CreateButton("Get Plate Master Badge", function()
-        if isEnabled then
-            isEnabled = false
-        else
-            isEnabled = true
-        end
-        
-        if not localPlr.Character:FindFirstChild("entered") and localPlr.Character:FindFirstChild("HumanoidRootPart") then
-            repeat wait(0.5)
-                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 0)
-                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 1)
-            until localPlr.Character:FindFirstChild("entered")
-        end
-        
-        if isEnabled and localPlr.Character then
-            repeat task.wait()
-                localPlr.Character.HumanoidRootPart.CFrame = workspace.Arena.Plate.CFrame
-            until not isEnabled or localPlr.PlayerGui.PlateIndicator.TextLabel.Text == "Plate Counter: 600" or not localPlr.Character or not localPlr.Character:FindFirstChild("entered")
-        end
-    end)
-    
-    plateBadge:AddToolTip("makes you sit on the plate for 10 minutes to get the plate master badge.")
+
     
     local cubeGod = playerSec:CreateButton("Delete the Cube of Death", function()
         if game:GetService("Workspace").Arena.CubeOfDeathArea:FindFirstChild("the cube of death(i heard it kills)") ~= nil then
@@ -936,114 +907,7 @@ end)
 -- Glove
 
 local gloveSec = mainTab:CreateSection("Glove")
-local name = "Slap Farm"
 
-if game.PlaceId == 9431156611 then name = "Kill All (PATCHED, DONT USE)" end
-
-local farmTog = gloveSec:CreateToggle(name, false, function(bool)
-    getgenv().slapFarm = bool
-    
-    if game.PlaceId == 9431156611 then
-        for _,v in pairs(workspace:GetDescendants()) do
-            if v:IsA("Seat") then
-                v.Disabled = getgenv().slapFarm
-            end
-        end
-    else
-        if setfpscap and getgenv().slapFarm then
-            setfpscap(50)
-        elseif setfpscap and not getgenv().slapFarm then
-            setfpscap(500)
-        end
-    end
-    
-    while wait() and getgenv().slapFarm do
-        if game.PlaceId ~= 9431156611 then
-            for _, target in next, game:GetService("Players"):GetPlayers() do
-                if target ~= localPlr and target.Character ~= nil and target.Character:FindFirstChild("entered") ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil and target.Character:FindFirstChild("FrozenHumanoid") == nil and target.Character:FindFirstChild("Ragdolled").Value == false and target.Character:FindFirstChild("Reversed") == nil and target.Character:FindFirstChild("Right Arm") and target.Character:FindFirstChild("Error") == nil and target.Character:FindFirstChild("Orbit") == nil and target.Character:FindFirstChild("Spectator") == nil and target.Backpack:FindFirstChild("Spectator") == nil and getgenv().slapFarm then                        
-                    localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
-                    
-                    pcall(function()
-                        if getTool() ~= nil and getTool().Name == "Default" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
-                            task.wait(0.25)
-                            game:GetService("ReplicatedStorage").b:FireServer(target.Character.HumanoidRootPart)
-                        elseif getTool() ~= nil and getTool().Name == "Bull" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
-                            task.wait(0.25)
-                            game:GetService("ReplicatedStorage").BullHit:FireServer(target.Character.HumanoidRootPart)
-                        elseif getTool() ~= nil and getTool().Name == "Ghost" and getgenv().slapFarm then
-                            localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
-                            task.wait(0.25)
-                            game:GetService("ReplicatedStorage").GhostHit:FireServer(target.Character.HumanoidRootPart)
-                        elseif getTool() ~= nil and getTool().Name == "Killstreak" and getgenv().slapFarm then
-                            repeat task.wait(0.25)
-                                localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
-                                task.wait(0.25)
-                                game:GetService("ReplicatedStorage").KSHit:FireServer(target.Character.HumanoidRootPart)
-                            until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
-                        elseif getTool() ~= nil and getTool().Name ~= "Default" and getgenv().slapFarm then
-                            repeat task.wait()
-                                localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3.5)
-                                getTool():Activate()
-                            until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
-                        end
-                    end)
-                    
-                    localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running)
-                    
-                    if getgenv().settings.autoToxic then
-                        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(target.Name .. " " .. getQuote(), "All")    
-                    end
-                    
-                    task.wait(0.35)
-                end
-            end
-        else
-            -- rogue hub's most advanced kill all yet!
-            
-            for _, target in next, game:GetService("Players"):GetPlayers() do
-                if target ~= localPlr and target.Character ~= nil and localPlr.Character ~= nil and target.Character:FindFirstChild("inMatch").Value and localPlr.Character:FindFirstChild("inMatch").Value and target.Character:FindFirstChild("Glider") == nil and localPlr.Character:FindFirstChild("Glider") == nil and target.Character:FindFirstChild("HumanoidRootPart") and localPlr.Character:FindFirstChild("HumanoidRootPart") and target.Character:FindFirstChild("Dead") == nil and target.Character.Ragdolled.Value == false and localPlr.Character.Ragdolled.Value == false and getgenv().slapFarm then
-                    --if workspace:FindFirstChild("BusModel") ~= nil and workspace:FindFirstChild("BusModel").Welds:FindFirstChild(localPlr.Name) ~= nil or workspace:FindFirstChild("BusModel") ~= nil and workspace:FindFirstChild("BusModel").Welds:FindFirstChild(target.Name) ~= nil then return end
-                    
-                    local gotAcid = false
-                    local gotLava = false
-                    
-                    if getTool() ~= nil and getgenv().slapFarm then
-                        pcall(function()
-                            localPlr.Character.HumanoidRootPart.Touched:Connect(function(part)
-                                if part.Name == "acidGod" and gotAcid == false then
-                                    gotAcid = true
-                                elseif part.Name == "lavaGod" and gotLava == false then
-                                    gotLava = true
-                                end
-                            end)
-                            
-                            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
-                            
-                            repeat task.wait()
-                                if getBackpackTool() then
-                                    localPlr.Character.Humanoid:EquipTool(getBackpackTool())
-                                end
-                                
-                                localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,6.3,0)
-                                game:GetService("ReplicatedStorage").Events.Slap:FireServer(target.Character["Right Arm"])
-                            until target.Character:FindFirstChild("Dead") ~= nil and target.Character:FindFirstChild("Dead").Value or getgenv().slapFarm == false or gotAcid or gotLava
-                            
-                            localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running)
-                        end)
-                    end
-                end
-            end
-        end
-    end
-end)
-
-local toolName = "Auto farm slaps, works best when paired with auto join (ban warning from mods)"
-
-if game.PlaceId == 9431156611 then toolName = "Kills all the players in your server (ban warning from mods)" end
-
-farmTog:AddToolTip(toolName)
 
 if game.PlaceId ~= 9431156611 then
     -- Fight Bot
@@ -1134,6 +998,160 @@ if game.PlaceId ~= 9431156611 then
     	getgenv().settings.botDistanceLimit = value
         saveSettings()
     end)
+
+	-- Farming
+
+	local farmSec = mainTab:CreateSection("Farming")
+	local slapple = farmSec:CreateToggle("Slapples Glove Farm", getgenv().settings.slappleFarm or false, function(bool)
+        getgenv().settings.slappleFarm = bool
+        saveSettings()
+    end)
+        
+    slapple:AddToolTip("Auto farm's slapple gloves for you. (gets you free slaps)")
+
+	local farmTog = farmSec:CreateToggle("Slap Farm", false, function(bool)
+		getgenv().slapFarm = bool
+		
+		if game.PlaceId == 9431156611 then
+			for _,v in pairs(workspace:GetDescendants()) do
+				if v:IsA("Seat") then
+					v.Disabled = getgenv().slapFarm
+				end
+			end
+		else
+			if setfpscap and getgenv().slapFarm then
+				setfpscap(50)
+			elseif setfpscap and not getgenv().slapFarm then
+				setfpscap(500)
+			end
+		end
+		
+		while wait() and getgenv().slapFarm do
+				for _, target in next, game:GetService("Players"):GetPlayers() do
+					if target ~= localPlr and target.Character ~= nil and target.Character:FindFirstChild("entered") ~= nil and localPlr.Character:FindFirstChild("entered") ~= nil and target.Character:FindFirstChild("FrozenHumanoid") == nil and target.Character:FindFirstChild("Ragdolled").Value == false and target.Character:FindFirstChild("Reversed") == nil and target.Character:FindFirstChild("Right Arm") and target.Character:FindFirstChild("Error") == nil and target.Character:FindFirstChild("Orbit") == nil and target.Character:FindFirstChild("Spectator") == nil and target.Backpack:FindFirstChild("Spectator") == nil and getgenv().slapFarm then                        
+						localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
+						
+						pcall(function()
+							if getTool() ~= nil and getTool().Name == "Default" and getgenv().slapFarm then
+								localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
+								task.wait(0.25)
+								game:GetService("ReplicatedStorage").b:FireServer(target.Character.HumanoidRootPart)
+							elseif getTool() ~= nil and getTool().Name == "Bull" and getgenv().slapFarm then
+								localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
+								task.wait(0.25)
+								game:GetService("ReplicatedStorage").BullHit:FireServer(target.Character.HumanoidRootPart)
+							elseif getTool() ~= nil and getTool().Name == "Ghost" and getgenv().slapFarm then
+								localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
+								task.wait(0.25)
+								game:GetService("ReplicatedStorage").GhostHit:FireServer(target.Character.HumanoidRootPart)
+							elseif getTool() ~= nil and getTool().Name == "Killstreak" and getgenv().slapFarm then
+								repeat task.wait(0.25)
+									localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-8,0)
+									task.wait(0.25)
+									game:GetService("ReplicatedStorage").KSHit:FireServer(target.Character.HumanoidRootPart)
+								until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
+							elseif getTool() ~= nil and getTool().Name ~= "Default" and getgenv().slapFarm then
+								repeat task.wait()
+									localPlr.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3.5)
+									getTool():Activate()
+								until target.Character == nil or localPlr.Character == nil or target.Character:FindFirstChild("Ragdolled").Value == true
+							end
+						end)
+						
+						localPlr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running)
+						
+						if getgenv().settings.autoToxic then
+							game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(target.Name .. " " .. getQuote(), "All")    
+						end
+						
+						task.wait(getgenv().settings.farmDelay)
+					end
+				end
+			end
+		end)
+		farmTog:AddToolTip("Auto farms slaps for you, teleports to every player. (ban warning from mods!!)")
+
+		local gSlapple = farmSec:CreateToggle("Auto Golden Slapple", getgenv().settings.autoGoldenSlapple or false, function(bool)
+			getgenv().settings.autoGoldenSlapple = bool
+			saveSettings()
+		end)
+			
+		gSlapple:AddToolTip("Auto picks up the Golden Slapple whenever it spawns.")
+
+		local farmTPDelay = farmSec:CreateSlider("Teleport Delay", 0.15,2,0.35 or 1,true, function(value)
+			getgenv().settings.farmDelay = value
+			saveSettings()
+		end)
+
+
+
+	-- Badges
+
+	local badgeSec = mainTab:CreateSection("Badges")
+	local isEnabled = false
+    
+    local plateBadge = badgeSec:CreateButton("Get Plate Master", function()
+        if isEnabled then
+            isEnabled = false
+        else
+            isEnabled = true
+        end
+        
+        if not localPlr.Character:FindFirstChild("entered") and localPlr.Character:FindFirstChild("HumanoidRootPart") then
+            repeat wait(0.5)
+                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 0)
+                firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 1)
+            until localPlr.Character:FindFirstChild("entered")
+        end
+        
+        if isEnabled and localPlr.Character then
+            repeat task.wait()
+                localPlr.Character.HumanoidRootPart.CFrame = workspace.Arena.Plate.CFrame
+            until not isEnabled or localPlr.PlayerGui.PlateIndicator.TextLabel.Text == "Plate Counter: 600" or not localPlr.Character or not localPlr.Character:FindFirstChild("entered")
+        end
+    end)
+    
+    plateBadge:AddToolTip("makes you sit on the plate for 10 minutes to get the plate master badge.")
+
+	local eludeBadge = badgeSec:CreateButton("Get Elude Badge", function() --// BluBambi#9867
+		local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
+		if teleportFunc then
+			teleportFunc([[
+				if not game:IsLoaded() then
+					game.Loaded:Wait()
+				end
+				
+				local localPlr = game:GetService("Players").LocalPlayer
+				repeat wait() until localPlr
+				
+				game:GetService("RunService").RenderStepped:Connect(function()
+					localPlr.Character.HumanoidRootPart.CFrame = CFrame.new(-502.336, 14.228, -179.597)
+				end)
+			]])
+		end
+		game:GetService("TeleportService"):Teleport(11828384869)
+	end)
+	eludeBadge:AddToolTip("auto gets the elude glove and badge for you, without using any keypads.")
+
+	local brazilBadge = badgeSec:CreateButton("Get Brazil Badge", function()
+		localPlr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Lobby.brazil.portal.CFrame
+	end)
+	brazilBadge:AddToolTip("gives you the brazil badge, and teleports you to the portal.")
+
+	local deepSlumber = badgeSec:CreateButton("Get Deep Slumber Badge", function() --// StoneNicolas93#0001
+		if getgenv().platform or workspace:FindFirstChild("ROGUEHUB_DeepSlumberPlatform") then -- Check if the script was already executed, and delete the previous platform.
+			getgenv().platform:Destroy() end
+		local args = {[1] = game:GetService("Players").LocalPlayer.Character,[2] = true} game:GetService("ReplicatedStorage").HumanoidDied:FireServer(unpack(args))
+		task.wait(4) fireclickdetector(game:GetService("Workspace").Lobby.ZZZZZZZ.ClickDetector)
+		if not localPlr.Character:FindFirstChild("entered") and localPlr.Character:FindFirstChild("HumanoidRootPart") then repeat wait(0.5) firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 0) firetouchinterest(localPlr.Character.HumanoidRootPart, workspace.Lobby.Teleport1, 1) until localPlr.Character:FindFirstChild("entered") ~= nil end
+		task.wait(.3) getgenv().platform = Instance.new("Part", workspace) platform.Name = "ROGUEHUB_DeepSlumberPlatform"
+		platform.Anchored = true platform.CFrame = CFrame.new(50.0579491, 136.881378, 205.572815, 0.996900737, 1.8988116e-08, 0.0786698163, -2.01459631e-08, 1, 1.39241259e-08, -0.0786698163, -1.54658508e-08, 0.996900737)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(50.0579491, 136.881378, 205.572815, 0.996900737, 1.8988116e-08, 0.0786698163, -2.01459631e-08, 1, 1.39241259e-08, -0.0786698163, -1.54658508e-08, 0.996900737) platform.Position = Vector3.new(platform.Position.X, platform.Position.Y - 6, platform.Position.Z) -- Rises the character by 4 studs.
+		platform.Transparency = 0.65 platform.Size = Vector3.new(15, 2, 15) game:GetService("ReplicatedStorage").ZZZZZZZSleep:FireServer() getgenv().platform.Name = tostring(math.random(1000000, 9999999))
+	end)
+	deepSlumber:AddToolTip("makes you sleep in a floating platform for 1 hour.")
+
+
     
     -- Chat Spam
 
@@ -1161,7 +1179,7 @@ end
 
 if game.PlaceId ~= 9431156611 then
     if game.PlaceId ~= 11520107397 then
-        local baller = gloveSec:CreateToggle("Baller Spammer (PATCHED, DONT USE)", false, function(bool)
+        local baller = gloveSec:CreateToggle("Baller Spammer (PATCHED)", false, function(bool)
             getgenv().settings.ballerFarm = bool
             saveSettings()
             
@@ -1176,7 +1194,7 @@ if game.PlaceId ~= 9431156611 then
         baller:AddToolTip("spam spawns ballers and slaps them, incredibly op and can even crash servers (20k slaps required)")
         
         if keypress and keyrelease then
-            local fartTog = gloveSec:CreateToggle("Fart Spam (FE)", getgenv().settings.spamFart or false, function(bool)
+            local fartTog = gloveSec:CreateToggle("Fart Spammer", getgenv().settings.spamFart or false, function(bool)
                 getgenv().settings.spamFart = bool
                 saveSettings()
             end)
@@ -1184,7 +1202,7 @@ if game.PlaceId ~= 9431156611 then
             fartTog:AddToolTip("no explanation needed, only works for the default glove") 
         end
         
-        local rockTog = gloveSec:CreateToggle("Rock Spam (FE)", getgenv().settings.spamRock or false, function(bool)
+        local rockTog = gloveSec:CreateToggle("Rock Spammer", getgenv().settings.spamRock or false, function(bool)
             getgenv().settings.spamRock = bool
             
             if not getgenv().settings.spamRock and getTool() ~= nil and getTool().Name == "Diamond" then
@@ -1528,6 +1546,25 @@ if game.PlaceId ~= 9431156611 then
     
     NoCamEffects:AddToolTip("Removes all of the games built in camera FOV and camera shake effects.")
 end
+--
+if game.PlaceId ~= 9431156611 then
+	local earrapeSec = mainTab:CreateSection("Earrapes")
+    local errorlol = earrapeSec:CreateToggle("Error Sound Earrape (FE)", getgenv().settings.errorSound or false, function(bool)
+        getgenv().settings.errorSound = bool
+        saveSettings()
+    end)
+    
+    errorlol:AddToolTip("spams the error sound, practically ear rape for everyone in your server.")
+
+	local thanosrape = earrapeSec:CreateToggle("Thanos Sound Earrape (FE)", getgenv().settings.thanosEarrape or false, function(bool)
+        getgenv().settings.thanosEarrape = bool
+        saveSettings()
+    end)
+    
+    thanosrape:AddToolTip("spams the thanos glove ill be back sound for everyone. (Requires Thanos glove equipped!)")
+
+	
+end
 
 -- Info
 
@@ -1631,6 +1668,7 @@ ragdollLabel = gameSec:CreateLabel("Times Ragdolled: " .. timeRagdolled)
 
 -- Misc
 local miscSec = infoTab:CreateSection("Miscellaneous")
+local cSec = infoTab:CreateSection("Cosmetic")
 local zoomBackup = localPlr.CameraMaxZoomDistance
 
 local server = miscSec:CreateButton("Serverhop", function()
@@ -1671,7 +1709,7 @@ if asset and isfile and writefile then
     
     soundsToggled:AddToolTip("plays a sound when enabling or disabling a feature.")
     
-    local femTog = miscSec:CreateToggle("Femboy", getgenv().settings.femBoy or false, function(bool)
+    local femTog = cSec:CreateToggle("Femboy", getgenv().settings.femBoy or false, function(bool)
         getgenv().settings.femBoy = bool
         saveSettings()
         
@@ -1713,6 +1751,21 @@ if asset and isfile and writefile then
     end)
     
     femTog:AddToolTip("uwu")
+
+	local hideSlaps = cSec:CreateToggle("Hide Slap Count", getgenv().settings.hideSlapCount or false, function(v)
+		game.Players.LocalPlayer.PlayerGui.gui.slapcount.Visible = not v
+		saveSettings()
+	end)
+
+	local hideFriends = cSec:CreateToggle("Hide Invite Friends", getgenv().settings.hideInviteFriends or false, function(v)
+		localPlr.PlayerGui.gui.friend.Visible = not v
+		saveSettings()
+	end)
+
+	local hideOptionsMenu = cSec:CreateToggle("Hide Options Menu", getgenv().settings.hideOptionsMenu or false, function(v)
+		localPlr.PlayerGui.gui.MenuOpen.Visible = not v
+		saveSettings()
+	end)
 end
 
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -1934,6 +1987,18 @@ game:GetService("RunService").RenderStepped:Connect(function()
         workspace.dedBarrier.Material = "Plastic"
         workspace.arenaVoid.Material = "Plastic"
     end
+
+	if getgenv().settings.autoGoldenSlapple then -- AutoSlapple (StoneNicolas93#0001)
+        if game:GetService("Workspace").Arena.island5.Slapples.GoldenSlapple.Glove.Transparency == 0 then -- Detects if it spawns
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Arena.island5.Slapples.GoldenSlapple.Glove.CFrame -- Teleports to the Golden Slapple's CFrame
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true -- Anchors the character, just in case there is lag and it didn't pick up the slapple.
+            task.wait(1.5) -- Waits, in case the slapple wasn't picked up.
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored -- Unanchors the character, so it can keep playing.
+        end
+    end
+	if getgenv().settings.thanosEarrape then
+		game:GetService("ReplicatedStorage"):WaitForChild("Illbeback"):FireServer()
+	end
 end)
 
 sound:Destroy()
@@ -1953,3 +2018,6 @@ while wait() do
         playLabel:UpdateText("Playtime In Seconds: " .. playtime)
     end
 end
+
+
+-- AYYY 2023 LINES W - HAPPY 2023 YALL
