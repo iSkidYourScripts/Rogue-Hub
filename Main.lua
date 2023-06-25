@@ -57,7 +57,7 @@ end
 local teleportFunc = queueonteleport or queue_on_teleport or syn and syn.queue_on_teleport
 
 if teleportFunc then
-    teleportFunc([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Main.lua", true))()]])
+    teleportFunc([[loadstring(game:HttpGet("https://github.com/948347893875338/Rogue-Hub-Reborn/blob/main/Main.lua", true))()]])
 end
 
 -- walkspeed anticheat bypass
@@ -114,7 +114,7 @@ local Config = {
 }
 
 local localPlr = game:GetService("Players").LocalPlayer
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kitzoon/Rogue-Hub/main/Extra/BracketV3.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Bracket/main/BracketV3.lua"))()
 local window = library:CreateWindow(Config, game:GetService("CoreGui"))
 local mainTab = window:CreateTab("Slap Battles")
 
